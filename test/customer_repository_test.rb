@@ -67,14 +67,6 @@ class CustomerRepositoryTest < Minitest::Test
     assert_equal 1, customer_repository.find_by_created_at("2012-03-27 14:54:09 UTC").id
   end
 
-  def test_it_can_find_a_customer_by_created_at_date
-    customer_repository = CustomerRepository.new(nil)
-    customer_repository.load_data("./test/fixtures/customers.csv")
-
-    assert_equal "Joey", customer_repository.find_by_created_at("2012-03-27 14:54:09 UTC").first_name
-    assert_equal 1, customer_repository.find_by_created_at("2012-03-27 14:54:09 UTC").id
-  end
-
   def test_it_can_find_a_customer_by_updated_at_date
     customer_repository = CustomerRepository.new(nil)
     customer_repository.load_data("./test/fixtures/customers.csv")
