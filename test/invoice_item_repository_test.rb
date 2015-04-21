@@ -95,3 +95,6 @@ end
 
 #come back and figure out BigDecimal and unit_price and refactor
 #what to_i are needed??? can it be in string format per spec harness
+#also, figure out the requires and file paths can you just
+#require_relative 'test_helper' ? do this at the end once you have the
+#spec_harness attached

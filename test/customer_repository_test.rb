@@ -75,4 +75,51 @@ class CustomerRepositoryTest < Minitest::Test
     assert_equal 1, customer_repository.find_by_updated_at("2012-03-27 14:54:09 UTC").id
   end
 
+  def test_it_can_find_all_customers_by_id
+    customer_repository = CustomerRepository.new(nil)
+    customer_repository.load_data("./test/fixtures/customers.csv")
+    result   = customer_repository.find_all_by_id(1)
+    result_2 = customer_repository.find_all_by_id(2)
+
+    assert_equal "Joey", result[0].first_name
+    assert_equal "Cecelia", result_2[0].first_name
+  end
+
+  def test_it_can_find_all_customers_by_first_name
+    customer_repository = CustomerRepository.new(nil)
+    customer_repository.load_data("./test/fixtures/customers.csv")
+    result   = customer_repository.find_all_by_first_name("Joey")
+    result_2 = customer_repository.find_all_by_first_name("Cecelia")
+
+    assert_equal 1, result[0].id
+    assert_equal 2, result_2[0].id
+  end
+
+  def test_it_can_find_all_customers_by_last_name
+    customer_repository = CustomerRepository.new(nil)
+    customer_repository.load_data("./test/fixtures/customers.csv")
+
+    result   = customer_repository.find_all_by_last_name("Toy")
+    result_2 = customer_repository.find_all_by_last_name("Braun")
+
+    assert_equal 3, result[0].id
+    assert_equal 4, result_2[0].id
+  end
+
+  def test_it_can_find_all_customers_by_created_at_date
+    customer_repository = CustomerRepository.new(nil)
+    customer_repository.load_data("./test/fixtures/customers.csv")
+
+    assert_equal 1, customer_repository.find_all_by_created_at("2012-03-27 14:54:09 UTC").count
+    assert_equal 4, customer_repository.find_all_by_created_at("2012-03-27 14:54:10 UTC").count
+  end
+
+  def test_it_can_find_a_customer_by_updated_at_date
+    customer_repository = CustomerRepository.new(nil)
+    customer_repository.load_data("./test/fixtures/customers.csv")
+
+    assert_equal 1, customer_repository.find_all_by_updated_at("2012-03-27 14:54:09 UTC").count
+    assert_equal 4, customer_repository.find_all_by_updated_at("2012-03-27 14:54:10 UTC").count
+  end
+
 end
