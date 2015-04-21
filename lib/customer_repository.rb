@@ -60,10 +60,6 @@ include LoadFile
       customer.updated_at == updated_at
     end
   end
-  # :id,
-  #            :first_name,
-  #            :last_name,
-  #            :created_at,
-  #            :updated_at,
+
 
 end
