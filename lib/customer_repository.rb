@@ -61,5 +61,34 @@ include LoadFile
     end
   end
 
+  def find_all_by_id(id)
+    customers.select do |customer|
+      customer.id == id
+    end
+  end
+
+  def find_all_by_first_name(first_name)
+    customers.select do |customer|
+      customer.first_name == first_name
+    end
+  end
+
+  def find_all_by_last_name(last_name)
+    customers.select do |customer|
+      customer.last_name == last_name
+    end
+  end
+
+  def find_all_by_created_at(created_at)
+    customers.select do |customer|
+      customer.created_at == created_at
+    end
+  end
+
+  def find_all_by_updated_at(updated_at)
+    customers.select do |customer|
+      customer.updated_at == updated_at
+    end
+  end
 
 end
