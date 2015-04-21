@@ -114,7 +114,7 @@ class CustomerRepositoryTest < Minitest::Test
     assert_equal 4, customer_repository.find_all_by_created_at("2012-03-27 14:54:10 UTC").count
   end
 
-  def test_it_can_find_a_customer_by_updated_at_date
+  def test_it_can_find_all_customers_by_updated_at_date
     customer_repository = CustomerRepository.new(nil)
     customer_repository.load_data("./test/fixtures/customers.csv")
 
