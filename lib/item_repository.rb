@@ -19,9 +19,9 @@ class ItemRepository
     file.close
   end
 
-  # def inspect
-  #   "#<#{self.class} #{@items.size} rows>"
-  # end
+  def inspect
+    "#<#{self.class} #{@items.size} rows>"
+  end
 
   def all
     items

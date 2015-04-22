@@ -18,10 +18,10 @@ include LoadFile
     end
     file.close
   end
-  #
-  # def inspect
-  #   "#<#{self.class} #{@merchants.size} rows>"
-  # end
+
+  def inspect
+    "#<#{self.class} #{@merchants.size} rows>"
+  end
 
   def all
     merchants

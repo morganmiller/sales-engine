@@ -21,6 +21,7 @@ class SalesEngine
 
   def startup
     # add memoization
+    # might need to pass in self for spec harness
     @customer_repository = CustomerRepository.new(self)
     @customer_repository.load_data("#{@filepath}/customers.csv")
     @merchant_repository = MerchantRepository.new(self)
