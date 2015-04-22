@@ -90,6 +90,60 @@ class InvoiceItemRepositoryTest < Minitest::Test
     assert_equal 539, invoice_item_repository.find_by_updated_at("2012-03-27 14:54:09 UTC").item_id
   end
 
+  def test_it_can_find_all_invoice_items_by_id
+    invoice_item_repository = InvoiceItemRepository.new(nil)
+    invoice_item_repository.load_data("./test/fixtures/invoice_items.csv")
+
+    assert_equal 539, invoice_item_repository.find_all_by_id(1)[0].item_id
+    assert_equal 1, invoice_item_repository.find_all_by_id(1)[0].invoice_id
+    assert_equal 528, invoice_item_repository.find_all_by_id(2)[0].item_id
+  end
+
+  def test_it_can_find_all_invoice_items_by_invoice_id
+    invoice_item_repository = InvoiceItemRepository.new(nil)
+    invoice_item_repository.load_data("./test/fixtures/invoice_items.csv")
+
+    assert_equal 5, invoice_item_repository.find_all_by_invoice_id(1).count
+  end
+
+  def test_it_can_find_all_invoice_items_by_item_id
+    invoice_item_repository = InvoiceItemRepository.new(nil)
+    invoice_item_repository.load_data("./test/fixtures/invoice_items.csv")
+
+    assert_equal 1, invoice_item_repository.find_all_by_item_id(539)[0].id
+  end
+
+  def test_it_can_find_all_invoice_items_by_quantity
+    invoice_item_repository = InvoiceItemRepository.new(nil)
+    invoice_item_repository.load_data("./test/fixtures/invoice_items.csv")
+
+    assert_equal 1, invoice_item_repository.find_all_by_quantity(5)[0].id
+    assert_equal 3, invoice_item_repository.find_all_by_quantity(8)[0].id
+  end
+
+  def test_it_can_find_all_invoice_items_by_unit_price
+    invoice_item_repository = InvoiceItemRepository.new(nil)
+    invoice_item_repository.load_data("./test/fixtures/invoice_items.csv")
+    result = invoice_item_repository.find_all_by_unit_price(BigDecimal.new(13635)/100)
+
+    assert_equal 1, result.count
+  end
+
+  def test_it_can_find_all_invoice_items_by_created_at_date
+    invoice_item_repository = InvoiceItemRepository.new(nil)
+    invoice_item_repository.load_data("./test/fixtures/invoice_items.csv")
+
+    assert_equal 5, invoice_item_repository.find_all_by_created_at("2012-03-27 14:54:09 UTC").count
+    assert_equal 0, invoice_item_repository.find_all_by_created_at("2012-03-27 14:54:10 UTC").count
+  end
+
+  def test_it_can_find_all_invoice_items_by_updated_at_date
+    invoice_item_repository = InvoiceItemRepository.new(nil)
+    invoice_item_repository.load_data("./test/fixtures/invoice_items.csv")
+
+    assert_equal 5, invoice_item_repository.find_all_by_updated_at("2012-03-27 14:54:09 UTC").count
+    assert_equal 0, invoice_item_repository.find_all_by_updated_at("2012-03-27 14:54:10 UTC").count
+  end
 end
 
 

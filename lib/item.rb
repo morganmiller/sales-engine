@@ -1,3 +1,5 @@
+require 'bigdecimal'
+
 class Item
   attr_reader :id,
               :name,
@@ -11,8 +13,8 @@ class Item
     @id           = line[:id].to_i
     @name         = line[:name]
     @description  = line[:description]
-    @unit_price   = line[:unit_price]
-    @merchant_id  = line[:merchant_id]
+    @unit_price   = BigDecimal.new(line[:unit_price])/100
+    @merchant_id  = line[:merchant_id].to_i
     @created_at   = line[:created_at]
     @updated_at   = line[:updated_at]
     @repository   = repository
