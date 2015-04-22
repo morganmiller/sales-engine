@@ -8,8 +8,8 @@ class Invoice
 
   def initialize(line, repository)
     @id           = line[:id].to_i
-    @customer_id  = line[:customer_id]
-    @merchant_id  = line[:merchant_id]
+    @customer_id  = line[:customer_id].to_i
+    @merchant_id  = line[:merchant_id].to_i
     @status       = line[:status]
     @created_at   = line[:created_at]
     @updated_at   = line[:updated_at]
