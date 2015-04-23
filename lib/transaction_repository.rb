@@ -115,4 +115,9 @@ class TransactionRepository
       transaction.result == result
     end
   end
+
+  def find_invoice(invoice_id)
+    sales_engine.find_invoice_by_invoice_id(invoice_id)
+  end
+
 end

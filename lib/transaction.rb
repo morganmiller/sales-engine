@@ -5,7 +5,8 @@ class Transaction
               :credit_card_expiration_date,
               :created_at,
               :updated_at,
-              :result
+              :result,
+              :repository
 
   def initialize(line, repository)
     @id                          = line[:id].to_i
@@ -17,4 +18,9 @@ class Transaction
     @result                      = line[:result]
     @repository                  = repository
   end
+
+  def invoice
+    repository.find_invoice(invoice_id)
+  end
+
 end

@@ -36,9 +36,6 @@ class SalesEngineTest < Minitest::Test
   end
 
   def test_it_can_load_data_at_startup
-    # engine.customer_repository.load_data("#{@filepath}/customers.csv")
-
-
     refute engine.customer_repository.customers.empty?
     refute engine.merchant_repository.merchants.empty?
     refute engine.invoice_repository.invoices.empty?
@@ -47,11 +44,44 @@ class SalesEngineTest < Minitest::Test
     refute engine.transaction_repository.transactions.empty?
   end
 
+  def test_it_can_find_invoices_by_customer_id
+    assert_equal 5, engine.find_invoices_by_customer_id(1).length
+  end
 
+  def test_it_can_find_invoice_by_id
+    assert_equal 1, engine.find_invoice_by_invoice_id(1).id
+  end
 
+  def test_it_can_find_items_by_merchant_id
+    assert_equal 5, engine.find_items_by_merchant_id(1).length
+  end
 
+  def test_it_can_find_invoices_by_merchant_id
+    assert_equal 1, engine.find_invoices_by_merchant_id(26).length
+  end
 
+  def test_it_can_find_invoice_items_by_item_id
+    assert_equal 1, engine.find_invoice_items_by_item_id(539).length
+  end
 
+  def test_it_can_find_merchant_by_id
+    assert_equal 1, engine.find_merchant_by_id(1).id
+  end
 
+  def test_it_can_find_item_by_id
+    assert_equal 1, engine.find_item_by_id(1).id
+  end
+
+  def test_it_can_find_transactions_by_invoice_id
+    assert_equal 1, engine.find_transactions_by_invoice_id(1).length
+  end
+
+  def test_it_can_find_invoice_items_by_invoice_id
+    assert_equal 5, engine.find_invoice_items_by_invoice_id(1).length
+  end
+
+  def test_it_can_find_customer_by_id
+    assert_equal 1, engine.find_customer_by_id(1).id
+  end
 
 end

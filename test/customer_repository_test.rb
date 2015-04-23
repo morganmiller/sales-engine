@@ -122,4 +122,6 @@ class CustomerRepositoryTest < Minitest::Test
     assert_equal 4, customer_repository.find_all_by_updated_at("2012-03-27 14:54:10 UTC").count
   end
 
+  ###Mock test find_invoices if needed for simplecov
+
 end

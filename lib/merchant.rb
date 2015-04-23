@@ -2,7 +2,8 @@ class Merchant
   attr_reader :id,
               :name,
               :created_at,
-              :updated_at
+              :updated_at,
+              :repository
 
   def initialize(line, repository)
     @id           = line[:id].to_i
@@ -11,4 +12,13 @@ class Merchant
     @updated_at   = line[:updated_at]
     @repository   = repository
   end
+
+  def items
+    repository.find_items(id)
+  end
+
+  def invoices
+    repository.find_invoices(id)
+  end
+
 end
