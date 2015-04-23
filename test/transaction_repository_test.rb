@@ -1,5 +1,6 @@
 require_relative '../test/test_helper'
 require_relative '../lib/transaction_repository'
+require_relative '../lib/sales_engine'
 
 class TransactionRepositoryTest < Minitest::Test
 
@@ -144,5 +145,12 @@ class TransactionRepositoryTest < Minitest::Test
     transaction_repository.load_data("./test/fixtures/transactions.csv")
 
     assert_equal 5, transaction_repository.find_all_by_result("success").count
+  end
+
+  def test_it_can_find_invoice_by_invoice_id
+    sales_engine = SalesEngine.new("./test/fixtures")
+    sales_engine.startup
+
+    assert_equal 1, sales_engine.transaction_repository.find_invoice(1).id
   end
 end

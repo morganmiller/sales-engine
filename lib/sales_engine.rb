@@ -101,7 +101,4 @@ class SalesEngine
 end
 
 
-# engine = SalesEngine.new("./data")
-# engine.startup
-# merchant = engine.merchant_repository.find_by_name("Terry-Moore")
-# merchant.favorite_customer
+
