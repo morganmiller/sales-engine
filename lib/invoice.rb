@@ -37,3 +37,16 @@ class Invoice
     repository.find_items(id)
   end
 end
+
+  #
+  #   describe "#invoice_items" do
+  #     it "has the correct number of them" do
+  #       expect(invoice.invoice_items.size).to eq 3
+  #     end
+  #
+  #     it "has one for a specific item" do
+  #       invoice_item_names = invoice.invoice_items.map { |ii| ii.item.name }
+  #       expect(invoice_item_names).to include 'Item Accusamus Officia'
+  #     end
+  #   end
+  # end

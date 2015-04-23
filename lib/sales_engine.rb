@@ -74,7 +74,7 @@ class SalesEngine
     customer_repository.find_by_id(id)
   end
 
-  def find_invoice_items_by_invoice_id(id)
+  def find_all_the_invoice_items_by_invoice_id(id)
     invoice_items = invoice_item_repository.find_all_by_invoice_id(id)
     find_item_ids_by_invoice_items(invoice_items)
   end
