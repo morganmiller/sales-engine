@@ -86,4 +86,17 @@ class MerchantRepository
   def find_invoices(id)
     sales_engine.find_invoices_by_merchant_id(id)
   end
+
+  def find_transactions(invoices)
+    invoices.map do |invoice|
+      sales_engine.find_transactions_by_invoice_id(invoice.id)
+    end
+  end
+
+  def retrieve_customers(successful_transactions)
+    invoices = sales_engine.find_invoices_by_transactions(successful_transactions)
+    invoices.map do |invoice|
+      sales_engine.find_customer_by_id(invoice.customer_id)
+    end
+  end
 end

@@ -91,4 +91,17 @@ class SalesEngine
       find_item_by_id(item_id)
     end
   end
+
+  def find_invoices_by_transactions(successful_transactions)
+    successful_transactions.map do |transaction|
+      find_invoice_by_invoice_id(transaction.invoice_id)
+    end
+  end
+
 end
+
+
+# engine = SalesEngine.new("./data")
+# engine.startup
+# merchant = engine.merchant_repository.find_by_name("Terry-Moore")
+# merchant.favorite_customer
