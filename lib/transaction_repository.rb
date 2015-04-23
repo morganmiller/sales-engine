@@ -2,7 +2,6 @@ require_relative 'load_file'
 require_relative 'transaction'
 
 class TransactionRepository
-
   attr_reader :transactions, :sales_engine
 
   include LoadFile
@@ -119,5 +118,4 @@ class TransactionRepository
   def find_invoice(invoice_id)
     sales_engine.find_invoice_by_invoice_id(invoice_id)
   end
-
 end

@@ -5,6 +5,7 @@ class MerchantRepositoryTest < Minitest::Test
 
   def test_it_starts_with_an_empty_array_of_merchants
     merchant_repository = MerchantRepository.new(nil)
+    
     assert_equal [], merchant_repository.merchants
   end
 

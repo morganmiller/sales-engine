@@ -6,7 +6,6 @@ require_relative './item_repository'
 require_relative './transaction_repository'
 
 class SalesEngine
-
   attr_reader :customer_repository,
               :merchant_repository,
               :invoice_repository,
@@ -73,5 +72,23 @@ class SalesEngine
 
   def find_customer_by_id(id)
     customer_repository.find_by_id(id)
+  end
+
+  def find_invoice_items_by_invoice_id(id)
+    invoice_items = invoice_item_repository.find_all_by_invoice_id(id)
+    find_item_ids_by_invoice_items(invoice_items)
+  end
+
+  def find_item_ids_by_invoice_items(invoice_items)
+    item_ids = invoice_items.map do |invoice_item|
+      invoice_item.item_id
+    end
+    find_items_by_ids(item_ids)
+  end
+
+  def find_items_by_ids(item_ids)
+    item_ids.map do |item_id|
+      find_item_by_id(item_id)
+    end
   end
 end

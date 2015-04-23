@@ -5,6 +5,7 @@ class TransactionRepositoryTest < Minitest::Test
 
   def test_it_starts_with_an_empty_array_of_transactions
     transaction_repository = TransactionRepository.new(nil)
+
     assert_equal [], transaction_repository.transactions
   end
 
@@ -144,6 +145,4 @@ class TransactionRepositoryTest < Minitest::Test
 
     assert_equal 5, transaction_repository.find_all_by_result("success").count
   end
-
 end
-

@@ -2,9 +2,9 @@ require_relative 'load_file'
 require_relative 'customer'
 
 class CustomerRepository
-attr_reader :customers, :sales_engine
+  attr_reader :customers, :sales_engine
 
-include LoadFile
+  include LoadFile
 
   def initialize(sales_engine)
     @customers = []
@@ -94,5 +94,4 @@ include LoadFile
   def find_invoices(id)
     sales_engine.find_invoices_by_customer_id(id)
   end
-
 end

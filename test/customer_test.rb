@@ -10,5 +10,4 @@ class CustomerTest < Minitest::Test
     customer = engine.customer_repository.all[0]
     assert_equal 5, customer.invoices.length
   end
-
 end

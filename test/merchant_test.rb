@@ -8,6 +8,7 @@ class MerchantTest < Minitest::Test
     engine = SalesEngine.new("./test/fixtures")
     engine.startup
     merchant = engine.merchant_repository.all[0]
+    
     assert_equal 5, merchant.items.length
   end
 
@@ -15,10 +16,7 @@ class MerchantTest < Minitest::Test
     engine = SalesEngine.new("./test/fixtures")
     engine.startup
     merchant = engine.merchant_repository.all[0]
+
     assert_equal 0, merchant.invoices.length
   end
-
-
-
-
 end

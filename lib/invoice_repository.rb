@@ -119,4 +119,7 @@ attr_reader :invoices, :sales_engine
     sales_engine.find_merchant_by_id(merchant_id)
   end
 
+  def find_items(id)
+    sales_engine.find_invoice_items_by_invoice_id(id)
+  end
 end

@@ -2,9 +2,9 @@ require_relative 'load_file'
 require_relative 'merchant'
 
 class MerchantRepository
-attr_reader :merchants, :sales_engine
+  attr_reader :merchants, :sales_engine
 
-include LoadFile
+  include LoadFile
 
   def initialize(sales_engine)
     @merchants = []
@@ -86,5 +86,4 @@ include LoadFile
   def find_invoices(id)
     sales_engine.find_invoices_by_merchant_id(id)
   end
-
 end

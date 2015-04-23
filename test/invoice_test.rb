@@ -8,6 +8,7 @@ class InvoiceTest < Minitest::Test
     engine = SalesEngine.new("./test/fixtures")
     engine.startup
     invoice = engine.invoice_repository.all[0]
+
     assert_equal 1, invoice.transactions.length
   end
 
@@ -15,6 +16,7 @@ class InvoiceTest < Minitest::Test
     engine = SalesEngine.new("./test/fixtures")
     engine.startup
     invoice = engine.invoice_repository.all[0]
+
     assert_equal 5, invoice.invoice_items.length
   end
 
@@ -22,6 +24,7 @@ class InvoiceTest < Minitest::Test
     engine = SalesEngine.new("./test/fixtures")
     engine.startup
     invoice = engine.invoice_repository.all[0]
+
     assert_equal 1, invoice.customer.id
   end
 
@@ -29,6 +32,16 @@ class InvoiceTest < Minitest::Test
     engine = SalesEngine.new("./test/fixtures")
     engine.startup
     invoice = engine.invoice_repository.all[0]
+    
     refute invoice.merchant
+  end
+
+  def test_it_can_find_items
+    engine = SalesEngine.new("./test/fixtures")
+    engine.startup
+    invoice = engine.invoice_repository.all[0]
+
+    assert_equal 5, invoice.items.length
+    assert_equal "", invoice.items
   end
 end

@@ -17,5 +17,4 @@ class InvoiceItemTest < Minitest::Test
     invoice_item = engine.invoice_item_repository.all[0]
     refute invoice_item.item
   end
-
 end

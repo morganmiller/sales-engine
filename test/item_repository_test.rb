@@ -5,6 +5,7 @@ class ItemRepositoryTest < Minitest::Test
 
   def test_it_starts_with_an_empty_array_of_items
     item_repository = ItemRepository.new(nil)
+
     assert_equal [], item_repository.items
   end
 
@@ -143,8 +144,4 @@ class ItemRepositoryTest < Minitest::Test
     assert_equal 5, item_repository.find_all_by_updated_at("2012-03-27 14:53:59 UTC").count
     assert_equal 1, item_repository.find_all_by_updated_at("2012-03-27 14:53:59 UTC")[0].merchant_id
   end
-
-
-
-
 end

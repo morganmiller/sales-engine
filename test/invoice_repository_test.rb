@@ -5,6 +5,7 @@ class InvoiceRepositoryTest < Minitest::Test
 
   def test_it_starts_with_an_empty_array_of_invoices
     invoice_repository = InvoiceRepository.new(nil)
+    
     assert_equal [], invoice_repository.invoices
   end
 

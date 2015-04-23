@@ -84,4 +84,8 @@ class SalesEngineTest < Minitest::Test
     assert_equal 1, engine.find_customer_by_id(1).id
   end
 
+  def test_it_can_find_items_by_ids
+    assert engine.find_items_by_ids([1,2,3,4,5])[0].is_a?(Item)
+    assert_equal 5, engine.find_items_by_ids([1,2,3,4,5]).length
+  end
 end

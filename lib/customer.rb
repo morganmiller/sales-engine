@@ -18,5 +18,4 @@ class Customer
   def invoices
     repository.find_invoices(id)
   end
-
 end
