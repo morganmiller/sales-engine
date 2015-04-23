@@ -98,6 +98,16 @@ class SalesEngine
     end
   end
 
+  def find_customers_by_invoice_ids(invoice_ids)
+    find_invoices_by_invoice_ids(invoice_ids).map do |invoice|
+      find_customer_by_id(invoice.customer_id)
+    end
+  end
+
+  def find_invoices_by_invoice_ids(ids)
+    ids.map { |invoice_id| find_invoice_by_invoice_id(invoice_id) }
+  end
+
 end
 
 

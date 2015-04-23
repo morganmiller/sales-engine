@@ -21,18 +21,42 @@ class Merchant
     repository.find_invoices(id)
   end
 
-  def favorite_customer
-    # require 'pry'
-    # binding.pry
-    transactions = repository.find_transactions(invoices).flatten
+  def transactions
+    repository.find_transactions(invoices)
+  end
+
+  ###Refactor, find something better than each: flat_map?
+  def successful_transactions
     successful_transactions = []
-    transactions.each do |transaction|
+    transactions.flatten.each do |transaction|
       successful_transactions << transaction if transaction.successful?
     end
-    customers = repository.retrieve_customers(successful_transactions)
-    customers_and_frequency = customers.inject(Hash.new(0)) { |cust, freq| cust[freq] += 1; cust }
+    successful_transactions
+  end
+
+  def customers
+    repository.retrieve_customers(successful_transactions)
+  end
+
+  def favorite_customer
+    customers_and_frequency = customers.inject(Hash.new(0)) do |cust, freq|
+      cust[freq] += 1; cust
+    end
     customers.max_by { |freq| customers_and_frequency[freq] }
   end
+
+  def customers_with_pending_invoices
+    transactions_by_invoice_id = {}
+    transactions.each do |trans|
+      id = trans[0].invoice_id unless trans[0].nil?
+      transactions_by_invoice_id[id] = trans
+    end
+    transactions_by_invoice_id.delete_if do |invoice_id, transactions|
+      transactions.any? { |a| a.successful? } || invoice_id.nil?
+    end
+    repository.retrieve_customers_with_pending_invoices(transactions_by_invoice_id.keys)
+  end
+
 end
 
 
