@@ -7,7 +7,8 @@ class Item
               :unit_price,
               :merchant_id,
               :created_at,
-              :updated_at
+              :updated_at,
+              :repository
 
   def initialize(line, repository)
     @id           = line[:id].to_i
@@ -18,5 +19,13 @@ class Item
     @created_at   = line[:created_at]
     @updated_at   = line[:updated_at]
     @repository   = repository
+  end
+
+  def invoice_items
+    repository.find_invoice_items(id)
+  end
+
+  def merchant
+    repository.find_merchant(merchant_id)
   end
 end

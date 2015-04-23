@@ -19,9 +19,9 @@ attr_reader :invoices, :sales_engine
     file.close
   end
 
-  # def inspect
-  #   "#<#{self.class} #{@invoices.size} rows>"
-  # end
+  def inspect
+    "#<#{self.class} #{@invoices.size} rows>"
+  end
 
   def all
     invoices
@@ -102,4 +102,21 @@ attr_reader :invoices, :sales_engine
       invoice.updated_at == updated_at
     end
   end
+
+  def find_transactions(id)
+    sales_engine.find_transactions_by_invoice_id(id)
+  end
+
+  def find_invoice_items(id)
+    sales_engine.find_invoice_items_by_invoice_id(id)
+  end
+
+  def find_customer(customer_id)
+    sales_engine.find_customer_by_id(customer_id)
+  end
+
+  def find_merchant(merchant_id)
+    sales_engine.find_merchant_by_id(merchant_id)
+  end
+
 end

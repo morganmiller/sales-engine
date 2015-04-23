@@ -14,4 +14,9 @@ class Customer
     @updated_at = line[:updated_at]
     @repository = repository
   end
+
+  def invoices
+    repository.find_invoices(id)
+  end
+
 end

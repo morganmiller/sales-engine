@@ -19,9 +19,9 @@ class ItemRepository
     file.close
   end
 
-  # def inspect
-  #   "#<#{self.class} #{@items.size} rows>"
-  # end
+  def inspect
+    "#<#{self.class} #{@items.size} rows>"
+  end
 
   def all
     items
@@ -113,6 +113,14 @@ class ItemRepository
     items.select do |item|
       item.updated_at == updated_at
     end
+  end
+
+  def find_invoice_items(id)
+    sales_engine.find_invoice_items_by_item_id(id)
+  end
+
+  def find_merchant(merchant_id)
+    sales_engine.find_merchant_by_id(merchant_id)
   end
 
 end

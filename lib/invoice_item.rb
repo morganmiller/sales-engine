@@ -7,7 +7,8 @@ class InvoiceItem
               :quantity,
               :unit_price,
               :created_at,
-              :updated_at
+              :updated_at,
+              :repository
 
   def initialize(line, repository)
     @id           = line[:id].to_i
@@ -19,5 +20,14 @@ class InvoiceItem
     @updated_at   = line[:updated_at]
     @repository   = repository
   end
+
+  def invoice
+    repository.find_invoice(invoice_id)
+  end
+
+  def item
+    repository.find_item(item_id)
+  end
+
 
 end
