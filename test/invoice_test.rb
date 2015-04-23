@@ -32,7 +32,7 @@ class InvoiceTest < Minitest::Test
     engine = SalesEngine.new("./test/fixtures")
     engine.startup
     invoice = engine.invoice_repository.all[0]
-    
+
     refute invoice.merchant
   end
 
@@ -42,6 +42,5 @@ class InvoiceTest < Minitest::Test
     invoice = engine.invoice_repository.all[0]
 
     assert_equal 5, invoice.items.length
-    assert_equal "", invoice.items
   end
 end
