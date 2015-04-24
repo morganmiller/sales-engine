@@ -8,7 +8,7 @@ class TransactionTest < Minitest::Test
     engine = SalesEngine.new("./test/fixtures")
     engine.startup
     transaction = engine.transaction_repository.all[0]
-    
+
     assert_equal 1, transaction.invoice.id
   end
 end
