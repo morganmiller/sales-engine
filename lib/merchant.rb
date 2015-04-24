@@ -1,3 +1,5 @@
+require 'pry'
+
 class Merchant
   attr_reader :id,
               :name,
@@ -21,8 +23,26 @@ class Merchant
     repository.find_invoices(id)
   end
 
+  def invoice_id_collection
+    invoices.map do |inv|
+      inv.id
+    end
+  end
+
+  ###If invoices' invoice ids contains an id that is not a part of the transactions' invoice ids
+
   def transactions
     repository.find_transactions(invoices)
+    #This method is returning some empty sub arrays...why?
+  end
+
+  def transactions_invoice_id_collection
+    remainder = transactions.delete_if { |t| t == [] }
+    remainder.map { |t| t[0].invoice_id }
+  end
+
+  def missing_invoice_ids
+    invoice_id_collection.select{ |id| !transactions_invoice_id_collection.include?(id) }
   end
 
   ###Refactor, find something better than each: flat_map?
@@ -47,14 +67,20 @@ class Merchant
 
   def customers_with_pending_invoices
     transactions_by_invoice_id = {}
+
     transactions.each do |trans|
       id = trans[0].invoice_id unless trans[0].nil?
       transactions_by_invoice_id[id] = trans
     end
+
     transactions_by_invoice_id.delete_if do |invoice_id, transactions|
       transactions.any? { |a| a.successful? } || invoice_id.nil?
     end
-    repository.retrieve_customers_with_pending_invoices(transactions_by_invoice_id.keys)
+
+    all_missing_invoice_ids = []
+    all_missing_invoice_ids << transactions_by_invoice_id.keys
+    all_missing_invoice_ids << missing_invoice_ids
+    repository.retrieve_customers_with_pending_invoices(all_missing_invoice_ids.flatten)
   end
 
 end

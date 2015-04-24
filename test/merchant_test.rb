@@ -34,7 +34,7 @@ class MerchantTest < Minitest::Test
     engine.startup
     merchant = engine.merchant_repository.find_by_name("Parisian Group")
 
-    assert_equal 2, merchant.customers_with_pending_invoices.length
+    assert_equal 4, merchant.customers_with_pending_invoices.length
     assert merchant.customers_with_pending_invoices[0].is_a?(Customer)
     assert_equal "Kailee", merchant.customers_with_pending_invoices[0].first_name
   end
