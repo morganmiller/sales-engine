@@ -96,8 +96,8 @@ class CustomerRepository
   end
 
   def find_transactions(invoices)
-    invoices.map do |invoice|
+    invoices.flat_map do |invoice|
       sales_engine.find_transactions_by_invoice_id(invoice.id)
-    end.flatten
+    end
   end
 end
