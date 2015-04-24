@@ -18,4 +18,10 @@ class Customer
   def invoices
     repository.find_invoices(id)
   end
+
+  def transactions
+    repository.find_transactions(invoices)
+  # require "pry"
+  # binding.pry
+  end
 end

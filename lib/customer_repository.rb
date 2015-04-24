@@ -94,4 +94,10 @@ class CustomerRepository
   def find_invoices(id)
     sales_engine.find_invoices_by_customer_id(id)
   end
+
+  def find_transactions(invoices)
+    invoices.map do |invoice|
+      sales_engine.find_transactions_by_invoice_id(invoice.id)
+    end.flatten
+  end
 end
