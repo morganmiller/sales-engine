@@ -62,20 +62,29 @@ class Merchant
     customers.max_by { |freq| customers_and_frequency[freq] }
   end
 
-  def customers_with_pending_invoices
-    transactions_by_invoice_id = {}
+  def transactions_by_invoice_id
+    transactions_by_inv_id = {}
     transactions.each do |trans|
       id = trans[0].invoice_id unless trans[0].nil?
-      transactions_by_invoice_id[id] = trans
+      transactions_by_inv_id[id] = trans
     end
+    transactions_by_inv_id
+  end
 
+  def pulled_transactions
     transactions_by_invoice_id.delete_if do |invoice_id, transactions|
       transactions.any? { |a| a.successful? } || invoice_id.nil?
     end
+  end
 
-    all_missing_invoice_ids = [transactions_by_invoice_id.keys, missing_invoice_ids].flatten
+  def all_missing_invoice_ids
+    [pulled_transactions.keys, missing_invoice_ids].flatten
+  end
+
+  def customers_with_pending_invoices
     repository.retrieve_customers_with_pending_invoices(all_missing_invoice_ids)
   end
+
 end
 
 
