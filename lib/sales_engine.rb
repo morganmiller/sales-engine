@@ -4,6 +4,7 @@ require_relative './invoice_repository'
 require_relative './invoice_item_repository'
 require_relative './item_repository'
 require_relative './transaction_repository'
+require 'pry'
 
 class SalesEngine
   attr_reader :customer_repository,
@@ -98,10 +99,13 @@ class SalesEngine
     end
   end
 
+  def find_customers_by_invoice_ids(invoice_ids)
+    find_invoices_by_invoice_ids(invoice_ids).map do |invoice|
+      find_customer_by_id(invoice.customer_id)
+    end
+  end
+
+  def find_invoices_by_invoice_ids(ids)
+    ids.map { |invoice_id| find_invoice_by_invoice_id(invoice_id) }
+  end
 end
-
-
-# engine = SalesEngine.new("./data")
-# engine.startup
-# merchant = engine.merchant_repository.find_by_name("Terry-Moore")
-# merchant.favorite_customer

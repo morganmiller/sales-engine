@@ -99,4 +99,9 @@ class MerchantRepository
       sales_engine.find_customer_by_id(invoice.customer_id)
     end
   end
+
+  def retrieve_customers_with_pending_invoices(invoice_ids)
+    sales_engine.find_customers_by_invoice_ids(invoice_ids)
+  end
+
 end
