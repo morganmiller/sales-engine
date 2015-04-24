@@ -88,7 +88,6 @@ class SalesEngineTest < Minitest::Test
     assert engine.find_items_by_ids([1,2,3,4,5])[0].is_a?(Item)
     assert_equal 5, engine.find_items_by_ids([1,2,3,4,5]).length
   end
-
 end
 
 #If time, write test for find_invoices_by_transactions

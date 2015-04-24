@@ -29,11 +29,8 @@ class Merchant
     end
   end
 
-  ###If invoices' invoice ids contains an id that is not a part of the transactions' invoice ids
-
   def transactions
     repository.find_transactions(invoices)
-    #This method is returning some empty sub arrays...why?
   end
 
   def transactions_invoice_id_collection
@@ -67,7 +64,6 @@ class Merchant
 
   def customers_with_pending_invoices
     transactions_by_invoice_id = {}
-
     transactions.each do |trans|
       id = trans[0].invoice_id unless trans[0].nil?
       transactions_by_invoice_id[id] = trans
@@ -77,12 +73,9 @@ class Merchant
       transactions.any? { |a| a.successful? } || invoice_id.nil?
     end
 
-    all_missing_invoice_ids = []
-    all_missing_invoice_ids << transactions_by_invoice_id.keys
-    all_missing_invoice_ids << missing_invoice_ids
-    repository.retrieve_customers_with_pending_invoices(all_missing_invoice_ids.flatten)
+    all_missing_invoice_ids = [transactions_by_invoice_id.keys, missing_invoice_ids].flatten
+    repository.retrieve_customers_with_pending_invoices(all_missing_invoice_ids)
   end
-
 end
 
 

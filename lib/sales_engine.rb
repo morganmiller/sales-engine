@@ -101,7 +101,6 @@ class SalesEngine
 
   def find_customers_by_invoice_ids(invoice_ids)
     find_invoices_by_invoice_ids(invoice_ids).map do |invoice|
-      binding.pry
       find_customer_by_id(invoice.customer_id)
     end
   end
@@ -109,12 +108,4 @@ class SalesEngine
   def find_invoices_by_invoice_ids(ids)
     ids.map { |invoice_id| find_invoice_by_invoice_id(invoice_id) }
   end
-
 end
-
-
-#
-# engine = SalesEngine.new("./data")
-# engine.startup
-# merchant = engine.merchant_repository.find_by_name("Parisian Group")
-# merchant.customers_with_pending_invoices
