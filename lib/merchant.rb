@@ -89,9 +89,9 @@ class Merchant
   #And reunites them with the invoice ids that had NO transactions
   def all_missing_invoice_ids
     [pulled_transactions.keys, missing_invoice_ids].flatten
+    # binding.pry
   end
 
-  
   def customers_with_pending_invoices
     repository.retrieve_customers_with_pending_invoices(all_missing_invoice_ids)
   end
