@@ -29,9 +29,9 @@ class Customer
     transactions.delete_if {|t| !t.successful?}
   end
 
-  # def favorite_merchant
-  #   repository.find.........
-  # end
+  def favorite_merchant
+    repository.find_favorite_merchant_id(successful_customer_transactions)
+  end
 
   #need to finish by finding merchant id associated with successful transactions(already done) and
   #then finding the merchant with the most transactions

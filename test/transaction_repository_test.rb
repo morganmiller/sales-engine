@@ -16,7 +16,7 @@ class TransactionRepositoryTest < Minitest::Test
 
     assert_equal 5 , transaction_repository.transactions.length
     assert_equal 1, transaction_repository.transactions.first.id
-    assert_equal 4354495077693036, transaction_repository.transactions[2].credit_card_number
+    assert_equal "4354495077693036", transaction_repository.transactions[2].credit_card_number
   end
 
   def test_it_can_return_all_transactions
@@ -39,27 +39,27 @@ class TransactionRepositoryTest < Minitest::Test
     transaction_repository = TransactionRepository.new(nil)
     transaction_repository.load_data("./test/fixtures/transactions.csv")
 
-    assert_equal 4654405418249632, transaction_repository.find_by_id(1).credit_card_number
+    assert_equal "4654405418249632", transaction_repository.find_by_id(1).credit_card_number
     assert_equal 1, transaction_repository.find_by_id(1).invoice_id
-    assert_equal 4580251236515201, transaction_repository.find_by_id(2).credit_card_number
+    assert_equal "4580251236515201", transaction_repository.find_by_id(2).credit_card_number
   end
 
   def test_it_can_find_a_transaction_by_invoice_id
     transaction_repository = TransactionRepository.new(nil)
     transaction_repository.load_data("./test/fixtures/transactions.csv")
 
-    assert_equal 4654405418249632, transaction_repository.find_by_invoice_id(1).credit_card_number
+    assert_equal "4654405418249632", transaction_repository.find_by_invoice_id(1).credit_card_number
     assert_equal 1, transaction_repository.find_by_invoice_id(1).id
-    assert_equal 4580251236515201, transaction_repository.find_by_invoice_id(2).credit_card_number
+    assert_equal "4580251236515201", transaction_repository.find_by_invoice_id(2).credit_card_number
   end
 
   def test_it_can_find_a_transaction_by_credit_card_number
     transaction_repository = TransactionRepository.new(nil)
     transaction_repository.load_data("./test/fixtures/transactions.csv")
 
-    assert_equal 1, transaction_repository.find_by_credit_card_number(4654405418249632).id
-    assert_equal 2, transaction_repository.find_by_credit_card_number(4580251236515201).invoice_id
-    assert_equal "success", transaction_repository.find_by_credit_card_number(4515551623735607).result
+    assert_equal 1, transaction_repository.find_by_credit_card_number("4654405418249632").id
+    assert_equal 2, transaction_repository.find_by_credit_card_number("4580251236515201").invoice_id
+    assert_equal "success", transaction_repository.find_by_credit_card_number("4515551623735607").result
   end
 
   def test_it_can_find_a_transaction_by_credit_expiration_date
@@ -111,9 +111,9 @@ class TransactionRepositoryTest < Minitest::Test
     transaction_repository = TransactionRepository.new(nil)
     transaction_repository.load_data("./test/fixtures/transactions.csv")
 
-    assert_equal 1, transaction_repository.find_all_by_credit_card_number(4654405418249632).count
-    assert_equal 2, transaction_repository.find_all_by_credit_card_number(4580251236515201)[0].invoice_id
-    assert_equal "success", transaction_repository.find_all_by_credit_card_number(4515551623735607)[0].result
+    assert_equal 1, transaction_repository.find_all_by_credit_card_number("4654405418249632").count
+    assert_equal 2, transaction_repository.find_all_by_credit_card_number("4580251236515201")[0].invoice_id
+    assert_equal "success", transaction_repository.find_all_by_credit_card_number("4515551623735607")[0].result
   end
 
   def test_it_can_find_all_transactions_by_credit_expiration_date
