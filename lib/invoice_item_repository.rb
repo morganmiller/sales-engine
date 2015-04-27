@@ -123,7 +123,7 @@ attr_reader :invoice_items, :sales_engine
   def find_item(item_id)
     sales_engine.find_item_by_id(item_id)
   end
-
+#refactor with reduce, good enumerable to make a hash 
   def find_most_items_sold
     unique_items = {}
     all.each do |invoice_item|
@@ -141,4 +141,3 @@ attr_reader :invoice_items, :sales_engine
     sorted.map { |a| a[0] }
   end
 end
-
