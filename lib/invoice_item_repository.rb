@@ -132,7 +132,8 @@ attr_reader :invoice_items, :sales_engine
 
   def items_with_quantities
     unique_items = {}
-    invoice_items_with_successful_transactions.each do |invoice_item|
+    invoice_items_with_successful_transactions.group_by do |invoice_item|
+      invoice_item.item_id
       if unique_items.has_key?(invoice_item.item_id)
         unique_items[invoice_item.item_id] << invoice_item.quantity
       else
