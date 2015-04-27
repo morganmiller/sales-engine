@@ -123,7 +123,7 @@ class ItemRepository
     sales_engine.find_merchant_by_id(merchant_id)
   end
 
-  # def most_items(x)
-  #   sales_engine.find_most_items(x)
-  # end
+  def most_items(x)
+    sales_engine.find_most_items(x)
+  end
 end

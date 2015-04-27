@@ -144,6 +144,7 @@ class InvoiceItemRepositoryTest < Minitest::Test
     assert_equal 5, invoice_item_repository.find_all_by_updated_at("2012-03-27 14:54:09 UTC").count
     assert_equal 0, invoice_item_repository.find_all_by_updated_at("2012-03-27 14:54:10 UTC").count
   end
+
 end
 
 
