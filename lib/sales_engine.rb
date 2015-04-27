@@ -113,4 +113,9 @@ class SalesEngine
     find_items_by_ids(invoice_item_repository.find_most_items_sold[0..x-1])
   end
 
+  def invoice_ids_for_successful_transactions
+    transaction_repository.successful_transactions.map do |transaction|
+      transaction.invoice_id
+    end
+  end
 end

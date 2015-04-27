@@ -96,6 +96,8 @@ class Merchant
     repository.retrieve_customers_with_pending_invoices(all_missing_invoice_ids)
   end
 
+  # def revenue
+  #
+  # end
+
 end
-
-

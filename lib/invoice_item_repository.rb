@@ -123,20 +123,30 @@ attr_reader :invoice_items, :sales_engine
   def find_item(item_id)
     sales_engine.find_item_by_id(item_id)
   end
-#refactor with reduce, good enumerable to make a hash 
-  def find_most_items_sold
+
+  def invoice_items_with_successful_transactions
+    all.map do |invoice_item|
+      invoice_item if sales_engine.invoice_ids_for_successful_transactions.include?(invoice_item.invoice_id)
+    end.delete_if {|invoice_item| invoice_item.nil?}
+  end
+
+  def items_with_quantities
     unique_items = {}
-    all.each do |invoice_item|
+    invoice_items_with_successful_transactions.each do |invoice_item|
       if unique_items.has_key?(invoice_item.item_id)
         unique_items[invoice_item.item_id] << invoice_item.quantity
       else
         unique_items[invoice_item.item_id] = [invoice_item.quantity]
       end
     end
-    total_quantities = unique_items.values.map do |quantities|
+    unique_items
+  end
+
+  def find_most_items_sold
+    total_quantities = items_with_quantities.values.map do |quantities|
       quantities.reduce(:+)
     end
-    unsorted = unique_items.keys.zip(total_quantities)
+    unsorted = items_with_quantities.keys.zip(total_quantities)
     sorted = unsorted.sort_by { |item_id, quantity| -quantity }
     sorted.map { |a| a[0] }
   end
