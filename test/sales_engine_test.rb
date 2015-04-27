@@ -88,6 +88,13 @@ class SalesEngineTest < Minitest::Test
     assert engine.find_items_by_ids([1,2,3,4,5])[0].is_a?(Item)
     assert_equal 5, engine.find_items_by_ids([1,2,3,4,5]).length
   end
+
+  def test_it_can_group_unique_item_ids_with_quantities
+    sales_engine = SalesEngine.new("./data")
+    sales_engine.startup
+
+    assert_equal "", sales_engine.find_most_items(37).last.name
+  end
 end
 
 #If time, write test for find_invoices_by_transactions

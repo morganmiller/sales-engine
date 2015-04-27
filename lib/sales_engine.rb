@@ -108,4 +108,9 @@ class SalesEngine
   def find_invoices_by_invoice_ids(ids)
     ids.map { |invoice_id| find_invoice_by_invoice_id(invoice_id) }
   end
+
+  def find_most_items(x)
+    find_items_by_ids(invoice_item_repository.find_most_items_sold[0..x-1])
+  end
+
 end
