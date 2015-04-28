@@ -1,7 +1,3 @@
-require 'pry'
-require 'bigdecimal'
-require 'bigdecimal/util'
-
 class Merchant
   attr_reader :id,
               :name,
@@ -91,15 +87,14 @@ class Merchant
   #And reunites them with the invoice ids that had NO transactions
   def all_missing_invoice_ids
     [pulled_transactions.keys, missing_invoice_ids].flatten
-    # binding.pry
   end
 
   def customers_with_pending_invoices
     repository.retrieve_customers_with_pending_invoices(all_missing_invoice_ids)
   end
 
-  def revenue
-    repository.total_revenue_for_a_merchant(id)
+  def revenue(date = nil)
+    repository.total_revenue_for_a_merchant(id, date)
   end
 
 end

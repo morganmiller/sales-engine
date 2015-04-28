@@ -1,7 +1,5 @@
 require_relative 'load_file'
 require_relative 'merchant'
-require 'bigdecimal/util'
-require 'bigdecimal'
 
 class MerchantRepository
   attr_reader :merchants, :sales_engine
@@ -112,8 +110,18 @@ class MerchantRepository
     end
   end
 
-  def total_revenue_for_a_merchant(merchant_id)
-    sales_engine.total_merchant_revenue(successful_invoices(merchant_id))
+  def successful_invoices_by_date(merchant_id, date)
+    successful_invoices(merchant_id).select do |invoice|
+      invoice if invoice.created_at == date
+    end
+  end
+
+  def total_revenue_for_a_merchant(merchant_id, date)
+    if date.nil?
+      sales_engine.total_merchant_revenue(successful_invoices(merchant_id))
+    else
+      sales_engine.total_merchant_revenue(successful_invoices_by_date(merchant_id, date))
+    end
   end
 
 end

@@ -1,7 +1,6 @@
 require_relative 'load_file'
 require_relative 'invoice_item'
 
-
 class InvoiceItemRepository
 
 attr_reader :invoice_items, :sales_engine

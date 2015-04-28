@@ -1,7 +1,5 @@
 require_relative '../test/test_helper'
 require_relative '../lib/sales_engine'
-require 'bigdecimal/util'
-require 'bigdecimal'
 
 class SalesEngineTest < Minitest::Test
 
