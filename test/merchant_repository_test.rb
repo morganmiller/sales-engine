@@ -101,4 +101,6 @@ class MerchantRepositoryTest < Minitest::Test
 
     assert_equal 5, merchant_repository.find_all_by_updated_at("2012-03-27 14:53:59 UTC").count
   end
+
+
 end

@@ -38,4 +38,22 @@ class MerchantTest < Minitest::Test
     assert merchant.customers_with_pending_invoices[0].is_a?(Customer)
     assert_equal "Andy", merchant.customers_with_pending_invoices[0].first_name
   end
+
+  def test_it_can_find_revenue_without_date
+    engine = SalesEngine.new("./data")
+    engine.startup
+    merchant = engine.merchant_repository.find_by_name("Parisian Group")
+
+    assert_equal 541307, merchant.revenue.to_i
+  end
+
+
+  def test_it_can_find_revenue_with_date
+    engine = SalesEngine.new("./data")
+    engine.startup
+    merchant = engine.merchant_repository.find_by_name("Willms and Sons")
+    date = Date.parse "Fri, 09 Mar 2012"
+
+    assert_equal 8373, merchant.revenue(date).to_i
+  end
 end

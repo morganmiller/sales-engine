@@ -175,10 +175,34 @@ attr_reader :invoice_items, :sales_engine
       a[0] * a[1]
     end
   end
+
   def top_grossing_items
     sorted = items_with_quantities.keys.zip(total_revenues).sort_by do |item_id, revenue|
       -revenue
     end
     sorted.map { |a| a[0] }
   end
+
+  def find_invoice_ids_from_invoices(invoices)
+    invoices.map do |invoice|
+      invoice.id
+    end
+  end
+
+  def find_invoice_items_from_invoice_ids(invoices)
+    find_invoice_ids_from_invoices(invoices).flat_map do |invoice_id|
+      find_all_by_invoice_id(invoice_id)
+    end
+  end
+
+  def find_revenue_for_invoice_items(invoices)
+    find_invoice_items_from_invoice_ids(invoices).map do |inv_item|
+      inv_item.revenue
+    end
+  end
+
+  def find_total_revenue_for_a_merchant(invoices)
+    find_revenue_for_invoice_items(invoices).reduce(:+)
+  end
+
 end

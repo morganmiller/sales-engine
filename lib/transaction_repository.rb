@@ -120,7 +120,7 @@ class TransactionRepository
   end
 
   def successful_transactions
-    all.map do |transaction|
+    @transaction_success ||= all.map do |transaction|
       transaction if transaction.successful?
     end.delete_if {|transaction| transaction.nil?}
   end

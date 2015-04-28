@@ -104,4 +104,24 @@ class MerchantRepository
     sales_engine.find_customers_by_invoice_ids(invoice_ids)
   end
 
+  def successful_invoices(merchant_id)
+    find_invoices(merchant_id).select do |invoice|
+      invoice if sales_engine.invoice_ids_for_successful_transactions.include?(invoice.id)
+    end
+  end
+
+  def successful_invoices_by_date(merchant_id, date)
+    successful_invoices(merchant_id).select do |invoice|
+      invoice if invoice.created_at == date
+    end
+  end
+
+  def total_revenue_for_a_merchant(merchant_id, date = nil)
+    if date.nil?
+      sales_engine.total_merchant_revenue(successful_invoices(merchant_id))
+    else
+      sales_engine.total_merchant_revenue(successful_invoices_by_date(merchant_id, date))
+    end
+  end
+
 end
