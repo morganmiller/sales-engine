@@ -118,6 +118,12 @@ class SalesEngine
     end
   end
 
+  def all_successful_invoices
+    invoice_ids_for_successful_transactions.map do |id|
+      invoice_repository.find_by_id(id)
+    end
+  end
+
   def find_most_revenue_for_items(x)
     find_items_by_ids(invoice_item_repository.top_grossing_items[0..x-1])
   end
@@ -126,3 +132,4 @@ class SalesEngine
     invoice_item_repository.find_total_revenue_for_a_merchant(invoices)
   end
 end
+

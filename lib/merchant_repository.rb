@@ -124,4 +124,85 @@ class MerchantRepository
     end
   end
 
+  def total_revenue_for_all_merchants
+    all.map do |merchant|
+      [merchant, total_revenue_for_a_merchant(merchant.id)]
+    end
+  end
+
+  def sorted_merchants_by_highest_revenue
+    total_revenue_for_all_merchants.sort_by { |merchant, total_revenue| -total_revenue }
+  end
+
+  def most_revenue(x)
+    sorted_merchants_by_highest_revenue.map { |merchant_revenue| merchant_revenue[0] }[0..x-1]
+  end
+
+  def merchants_with_successful_invoices
+    all.map do |merchant|
+      [merchant, successful_invoices(merchant.id)]
+    end
+  end
+
+  def associated_merchant_invoices
+    merchants_with_successful_invoices.map do |merchant_and_invoices|
+      merchant_and_invoices[1]
+    end
+  end
+
+  def associated_merchant_invoice_items
+    associated_merchant_invoices.map do |invoices|
+      sales_engine.invoice_item_repository.find_invoice_items_from_invoice_ids(invoices)
+    end
+  end
+
+  def quantity_of_individual_invoice_items
+    associated_merchant_invoice_items.map do |invoice_items|
+      invoice_items.map { |invoice_item| invoice_item.quantity }
+    end
+  end
+
+  def total_quantities_in_order
+    quantity_of_individual_invoice_items.map do |quantities|
+      quantities.reduce(:+)
+    end
+  end
+
+  def merchants_sorted_by_most_items_sold
+    all.zip(total_quantities_in_order).sort_by do |merchant, quantity|
+      -quantity
+    end
+  end
+
+  def most_items(x)
+    merchants_sorted_by_most_items_sold.map do |merchant_and_quantity|
+      merchant_and_quantity[0]
+    end[0..x-1]
+  end
+
+  def invoices_for_each_date
+    sales_engine.all_successful_invoices.group_by do |invoice|
+      invoice.created_at
+    end
+  end
+
+  def revenues_for_invoices
+    invoices_for_each_date.values.map do |invoices|
+      sales_engine.invoice_item_repository.find_revenue_for_invoice_items(invoices)
+    end
+  end
+
+  def total_revenue_for_invoices
+    revenues_for_invoices.map do |revenues|
+      revenues.reduce(:+)
+    end
+  end
+
+  def total_revenue_for_date_of_sale
+    Hash[invoices_for_each_date.keys.zip(total_revenue_for_invoices)]
+  end
+
+  def revenue(date)
+    total_revenue_for_date_of_sale.fetch(date)
+  end
 end
