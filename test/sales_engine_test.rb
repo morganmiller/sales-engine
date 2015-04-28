@@ -90,6 +90,7 @@ class SalesEngineTest < Minitest::Test
   end
 
   def test_it_can_find_most_items_sold
+    skip
     sales_engine = SalesEngine.new("./business_logic_fixtures")
     sales_engine.startup
 
@@ -104,6 +105,7 @@ class SalesEngineTest < Minitest::Test
   end
 
   def test_it_can_find_total_revenue_for_a_merchant_with_no_date
+    skip
     sales_engine = SalesEngine.new("./data")
     sales_engine.startup
 
@@ -111,12 +113,28 @@ class SalesEngineTest < Minitest::Test
   end
 
   def test_it_can_find_total_revenue_for_a_merchant_with_date
+    skip
     engine = SalesEngine.new("./data")
     engine.startup
     merchant = engine.merchant_repository.find_by_name("Willms and Sons")
     date = Date.parse "Fri, 09 Mar 2012"
 
     assert_equal 8373, merchant.revenue(date).to_i
+  end
+
+  def test_it_can_find_merchants_by_highest_revenue
+    engine = SalesEngine.new("./data")
+    engine.startup
+
+    assert_equal "Dicki-Bednar", engine.merchant_repository.most_revenue(5).first.name
+  end
+
+  def test_it_can_find_merchants_by_most_items_sold
+    engine = SalesEngine.new("./data")
+    engine.startup
+
+    assert_equal "Kassulke, O'Hara and Quitzon", engine.merchant_repository.most_items(5).first.name
+    assert_equal "Daugherty Group", engine.merchant_repository.most_items(5).last.name
   end
 
 end

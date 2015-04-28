@@ -126,3 +126,4 @@ class SalesEngine
     invoice_item_repository.find_total_revenue_for_a_merchant(invoices)
   end
 end
+

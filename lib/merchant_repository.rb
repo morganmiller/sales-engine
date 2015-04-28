@@ -124,4 +124,45 @@ class MerchantRepository
     end
   end
 
+  def total_revenue_for_all_merchants
+    all.map do |merchant|
+      [merchant, total_revenue_for_a_merchant(merchant.id)]
+    end
+  end
+
+  def sorted_merchants_by_highest_revenue
+    total_revenue_for_all_merchants.sort_by { |merchant, total_revenue| -total_revenue }
+  end
+
+  def most_revenue(x)
+    sorted_merchants_by_highest_revenue.map { |merchant_revenue| merchant_revenue[0] }[0..x-1]
+  end
+
+  def most_items(x)
+    merchants_with_successful_invoices = all.map do |merchant|
+      [merchant, successful_invoices(merchant.id)]
+    end
+    invoices_ordered_by_merchant = merchants_with_successful_invoices.map do |merchant_and_invoices|
+      merchant_and_invoices[1]
+    end
+    invoice_items_ordered_by_merchant = invoices_ordered_by_merchant.map do |invoices|
+      sales_engine.invoice_item_repository.find_invoice_items_from_invoice_ids(invoices)
+    end
+    quantity_of_individual_invoice_items = invoice_items_ordered_by_merchant.map do |invoice_items|
+      invoice_items.map { |invoice_item| invoice_item.quantity }
+    end
+    ordered_total_quantities = quantity_of_individual_invoice_items.map do |quantities|
+      quantities.reduce(:+)
+    end
+    ordered_merchants = merchants_with_successful_invoices.map do |merchants_and_invoices|
+      merchants_and_invoices[0]
+    end
+    sorted_merchants_by_quantity = ordered_merchants.zip(ordered_total_quantities).sort_by do |merchant, quantity|
+      -quantity
+    end
+    sorted_merchants_by_quantity.map do |merchant_and_quantity|
+      merchant_and_quantity[0]
+    end[0..x-1]
+  end
+
 end
