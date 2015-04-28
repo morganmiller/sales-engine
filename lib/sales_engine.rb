@@ -131,5 +131,12 @@ class SalesEngine
   def total_merchant_revenue(invoices) #rename: this is revenue for just 1 merchant not all
     invoice_item_repository.find_total_revenue_for_a_merchant(invoices)
   end
-end
 
+  def new_charge_with_invoice_id(card_info, id)
+    transaction_repository.create_new_charge(card_info, id)
+  end
+
+  def create_new_items_with_invoice_id(items, id)
+    invoice_item_repository.create_new_items(items, id)
+  end
+end

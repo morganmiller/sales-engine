@@ -122,4 +122,25 @@ attr_reader :invoices, :sales_engine
   def find_items(id)
     sales_engine.find_all_the_invoice_items_by_invoice_id(id)
   end
+
+  def create(inputs)
+  line = {
+    id:          "#{invoices.last.id + 1}",
+    customer_id: inputs[:customer].id,
+    merchant_id: inputs[:merchant].id,
+    status:      inputs[:status],
+    created_at:  "#{Date.new}",
+    updated_at:  "#{Date.new}",
+          }
+
+  new_inv = Invoice.new(line, self)
+  invoices << new_inv
+
+  sales_engine.create_new_items_with_invoice_id(inputs[:items], new_inv.id)
+  new_inv
+  end
+
+  def new_charge(card_info, id)
+    sales_engine.new_charge_with_invoice_id(card_info, id)
+  end
 end

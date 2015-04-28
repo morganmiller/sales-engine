@@ -38,4 +38,8 @@ class Invoice
   def items
     repository.find_items(id)
   end
+
+  def charge(card_info)
+   repository.new_charge(card_info, id)
+ end
 end
