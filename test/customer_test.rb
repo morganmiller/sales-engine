@@ -38,6 +38,5 @@ class CustomerTest < Minitest::Test
 
     assert_equal 53, customer.favorite_merchant.id
     assert_equal 92 , customer_2.favorite_merchant.id
-
   end
 end

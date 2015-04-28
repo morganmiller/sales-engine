@@ -21,18 +21,13 @@ class Customer
 
   def transactions
     repository.find_transactions(invoices)
-  # require "pry"
-  # binding.pry
   end
 
   def successful_customer_transactions
-    transactions.delete_if {|t| !t.successful?}
+    transactions.delete_if {|transaction| !transaction.successful?}
   end
 
   def favorite_merchant
     repository.find_favorite_merchant_id(successful_customer_transactions)
   end
-
-  #need to finish by finding merchant id associated with successful transactions(already done) and
-  #then finding the merchant with the most transactions
 end

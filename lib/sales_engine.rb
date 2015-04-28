@@ -122,7 +122,7 @@ class SalesEngine
     find_items_by_ids(invoice_item_repository.top_grossing_items[0..x-1])
   end
 
-  def total_merchant_revenue(invoices)
+  def total_merchant_revenue(invoices) #rename: this is revenue for just 1 merchant not all
     invoice_item_repository.find_total_revenue_for_a_merchant(invoices)
   end
 end
