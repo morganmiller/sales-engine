@@ -1,6 +1,7 @@
 require_relative 'load_file'
 require_relative 'invoice_item'
 
+
 class InvoiceItemRepository
 
 attr_reader :invoice_items, :sales_engine
@@ -175,10 +176,27 @@ attr_reader :invoice_items, :sales_engine
       a[0] * a[1]
     end
   end
+
   def top_grossing_items
     sorted = items_with_quantities.keys.zip(total_revenues).sort_by do |item_id, revenue|
       -revenue
     end
     sorted.map { |a| a[0] }
   end
+
+  def find_total_revenue_for_a_merchant(invoices)
+    # require 'pry'
+    # binding.pry
+    invoice_ids = invoices.map do |invoice|
+      invoice.id
+    end
+    inv_items = invoice_ids.flat_map do |invoice_id|
+      find_all_by_invoice_id(invoice_id)
+    end
+    flappy = inv_items.map do |inv_item|
+      inv_item.revenue
+    end
+    flappy.reduce(:+)
+  end
+
 end

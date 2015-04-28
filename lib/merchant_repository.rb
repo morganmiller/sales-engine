@@ -1,5 +1,7 @@
 require_relative 'load_file'
 require_relative 'merchant'
+require 'bigdecimal/util'
+require 'bigdecimal'
 
 class MerchantRepository
   attr_reader :merchants, :sales_engine
@@ -102,6 +104,13 @@ class MerchantRepository
 
   def retrieve_customers_with_pending_invoices(invoice_ids)
     sales_engine.find_customers_by_invoice_ids(invoice_ids)
+  end
+
+  def total_revenue_for_a_merchant(merchant_id)
+    successful_invoices = find_invoices(merchant_id).select do |invoice|
+      invoice if sales_engine.invoice_ids_for_successful_transactions.include?(invoice.id)
+    end
+    sales_engine.find_invoice_items_by_invoices(successful_invoices)
   end
 
 end

@@ -1,5 +1,7 @@
 require_relative '../test/test_helper'
 require_relative '../lib/sales_engine'
+require 'bigdecimal/util'
+require 'bigdecimal'
 
 class SalesEngineTest < Minitest::Test
 
@@ -98,11 +100,20 @@ class SalesEngineTest < Minitest::Test
   end
 
   def test_it_can_find_top_grossing_items
+    skip
     sales_engine = SalesEngine.new("./data")
     sales_engine.startup
 
     assert_equal "", sales_engine.find_most_revenue_for_items(3)
   end
+
+  def test_it_can_find_total_revenue_for_a_merchant
+    sales_engine = SalesEngine.new("./data")
+    sales_engine.startup
+
+    assert_equal 447999, sales_engine.merchant_repository.total_revenue_for_a_merchant(50).to_i
+  end
+
 end
 
 #If time, write test for find_invoices_by_transactions

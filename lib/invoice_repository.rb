@@ -1,5 +1,7 @@
 require_relative 'load_file'
 require_relative 'invoice'
+require 'bigdecimal/util'
+require 'bigdecimal'
 
 class InvoiceRepository
 attr_reader :invoices, :sales_engine

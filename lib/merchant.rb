@@ -1,4 +1,6 @@
 require 'pry'
+require 'bigdecimal'
+require 'bigdecimal/util'
 
 class Merchant
   attr_reader :id,
@@ -96,8 +98,8 @@ class Merchant
     repository.retrieve_customers_with_pending_invoices(all_missing_invoice_ids)
   end
 
-  # def revenue
-  #
-  # end
+  def revenue
+    repository.total_revenue_for_a_merchant(id)
+  end
 
 end

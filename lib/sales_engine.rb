@@ -122,4 +122,8 @@ class SalesEngine
   def find_most_revenue_for_items(x)
     find_items_by_ids(invoice_item_repository.top_grossing_items[0..x-1])
   end
+
+  def find_invoice_items_by_invoices(invoices)
+    invoice_item_repository.find_total_revenue_for_a_merchant(invoices)
+  end
 end
