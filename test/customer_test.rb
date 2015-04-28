@@ -8,13 +8,6 @@ class CustomerTest < Minitest::Test
     engine = SalesEngine.new("./test/fixtures")
     engine.startup
     customer = engine.customer_repository.all[0]
-    assert_equal 5, customer.invoices.length
-  end
-
-  def test_it_can_find_invoices
-    engine = SalesEngine.new("./test/fixtures")
-    engine.startup
-    customer = engine.customer_repository.all[0]
 
     assert_equal 5, customer.invoices.length
   end
