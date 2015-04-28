@@ -90,26 +90,33 @@ class SalesEngineTest < Minitest::Test
   end
 
   def test_it_can_find_most_items_sold
-    skip
-    sales_engine = SalesEngine.new("./data")
+    sales_engine = SalesEngine.new("./business_logic_fixtures")
     sales_engine.startup
 
-    assert_equal "Item Ut Quaerat", sales_engine.find_most_items(37).last.name
+    assert_equal "Item Qui Esse", sales_engine.find_most_items(2).last.name
   end
 
   def test_it_can_find_top_grossing_items
-    skip
-    sales_engine = SalesEngine.new("./data")
+    sales_engine = SalesEngine.new("./business_logic_fixtures")
     sales_engine.startup
 
-    assert_equal "", sales_engine.find_most_revenue_for_items(3)
+    assert_equal "Item Autem Minima", sales_engine.find_most_revenue_for_items(3).first.name
   end
 
-  def test_it_can_find_total_revenue_for_a_merchant
+  def test_it_can_find_total_revenue_for_a_merchant_with_no_date
     sales_engine = SalesEngine.new("./data")
     sales_engine.startup
 
     assert_equal 447999, sales_engine.merchant_repository.total_revenue_for_a_merchant(50).to_i
+  end
+
+  def test_it_can_find_total_revenue_for_a_merchant_with_date
+    engine = SalesEngine.new("./data")
+    engine.startup
+    merchant = engine.merchant_repository.find_by_name("Willms and Sons")
+    date = Date.parse "Fri, 09 Mar 2012"
+
+    assert_equal 8373, merchant.revenue(date).to_i
   end
 
 end

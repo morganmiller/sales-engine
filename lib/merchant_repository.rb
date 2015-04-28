@@ -116,7 +116,7 @@ class MerchantRepository
     end
   end
 
-  def total_revenue_for_a_merchant(merchant_id, date)
+  def total_revenue_for_a_merchant(merchant_id, date = nil)
     if date.nil?
       sales_engine.total_merchant_revenue(successful_invoices(merchant_id))
     else
