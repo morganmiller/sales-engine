@@ -130,7 +130,7 @@ attr_reader :invoice_items, :sales_engine
     end.delete_if {|invoice_item| invoice_item.nil?}
   end
 
-  def items_with_quantities
+  def invoice_items_with_quantities
     unique_items = {}
     invoice_items_with_successful_transactions.group_by do |invoice_item|
       invoice_item.item_id
@@ -143,14 +143,14 @@ attr_reader :invoice_items, :sales_engine
     unique_items
   end
 
-  def total_quantities
-    items_with_quantities.values.map do |quantity|
+  def total_quantities(quantities_to_sum)
+    quantities_to_sum.map do |quantity|
       quantity.reduce(:+)
     end
   end
 
   def items_sorted_by_total_quantities
-    items_with_quantities.keys.zip(total_quantities).sort_by do |item_id, quantity|
+    invoice_items_with_quantities.keys.zip(total_quantities(invoice_items_with_quantities.values)).sort_by do |item_id, quantity|
       -quantity
     end
   end
@@ -160,7 +160,7 @@ attr_reader :invoice_items, :sales_engine
   end
 
   def retrieve_items_by_ids
-    sales_engine.find_items_by_ids(items_with_quantities.keys)
+    sales_engine.find_items_by_ids(invoice_items_with_quantities.keys)
   end
 
   def all_unit_prices
@@ -170,14 +170,14 @@ attr_reader :invoice_items, :sales_engine
   end
 
   def total_revenues
-    tots = total_quantities.zip(all_unit_prices)
+    tots = total_quantities(invoice_items_with_quantities.values).zip(all_unit_prices)
     tots.flat_map do |a|
       a[0] * a[1]
     end
   end
 
   def top_grossing_items
-    sorted = items_with_quantities.keys.zip(total_revenues).sort_by do |item_id, revenue|
+    sorted = invoice_items_with_quantities.keys.zip(total_revenues).sort_by do |item_id, revenue|
       -revenue
     end
     sorted.map { |a| a[0] }

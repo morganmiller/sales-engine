@@ -192,11 +192,17 @@ class MerchantRepository
     end
   end
 
-  def revenue(date)
-    total_revenues = revenues_for_invoices.map do |revenues|
+  def total_revenue_for_invoices
+    revenues_for_invoices.map do |revenues|
       revenues.reduce(:+)
     end
-    dates_with_total_revenues = Hash[dates_of_invoices.keys.zip(total_revenues)]
-    dates_with_total_revenues.fetch(date)
+  end
+
+  def total_revenue_for_date_of_sale
+    Hash[invoices_for_each_date.keys.zip(total_revenue_for_invoices)]
+  end
+
+  def revenue(date)
+    total_revenue_for_date_of_sale.fetch(date)
   end
 end

@@ -29,4 +29,8 @@ class Item
     repository.find_merchant(merchant_id)
   end
 
+  def best_day
+    repository.find_best_day(id)
+  end
+
 end

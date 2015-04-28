@@ -145,6 +145,14 @@ class SalesEngineTest < Minitest::Test
     assert_equal 2549722, sales_engine.merchant_repository.revenue(date).to_i
   end
 
+  def test_item_knows_its_best_day
+    sales_engine = SalesEngine.new("./data")
+    sales_engine.startup
+    item = sales_engine.item_repository.all[0]
+
+    assert_equal Date.new(2012, 3, 10), item.best_day
+  end
+
 end
 
 #If time, write test for find_invoices_by_transactions

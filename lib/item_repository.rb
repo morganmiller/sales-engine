@@ -130,4 +130,46 @@ class ItemRepository
   def most_revenue(x)
     sales_engine.find_most_revenue_for_items(x)
   end
+
+  def yo_item_heres_your_invoice_items(id)
+    sales_engine.invoice_item_repository.find_all_by_item_id(id)
+  end
+
+  def invoices_for_invoice_items(id)
+    yo_item_heres_your_invoice_items(id).flat_map do |invoice_item|
+      sales_engine.invoice_repository.find_all_by_id(invoice_item.invoice_id)
+    end
+  end
+
+  def dates_shit_was_sold(id)
+    invoices_for_invoice_items(id).map do |invoice|
+      invoice.created_at
+    end
+  end
+
+  def dates_and_invoice_items(id)
+    dates_shit_was_sold(id).zip(yo_item_heres_your_invoice_items(id))
+  end
+
+  def dates_and_quantities_sold(id)
+    hashy = {}
+    dates_and_invoice_items(id).map do |date, invoice_item|
+      if hashy.has_key?(date)
+        hashy[date] << invoice_item.quantity
+      else
+        hashy[date] = [invoice_item.quantity]
+      end
+    end
+    hashy
+  end
+
+  def summed_quantities_for_best_day(id)
+    sales_engine.invoice_item_repository.total_quantities(dates_and_quantities_sold(id).values)
+  end
+
+  def find_best_day(id)
+    dates_and_quantities_sold(id).keys.zip(summed_quantities_for_best_day(id)).sort_by do |date, quantity|
+      -quantity
+    end.first[0]
+  end
 end
