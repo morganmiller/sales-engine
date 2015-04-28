@@ -138,31 +138,65 @@ class MerchantRepository
     sorted_merchants_by_highest_revenue.map { |merchant_revenue| merchant_revenue[0] }[0..x-1]
   end
 
-  def most_items(x)
-    merchants_with_successful_invoices = all.map do |merchant|
+  def merchants_with_successful_invoices
+    all.map do |merchant|
       [merchant, successful_invoices(merchant.id)]
     end
-    invoices_ordered_by_merchant = merchants_with_successful_invoices.map do |merchant_and_invoices|
+  end
+
+  def associated_merchant_invoices
+    merchants_with_successful_invoices.map do |merchant_and_invoices|
       merchant_and_invoices[1]
     end
-    invoice_items_ordered_by_merchant = invoices_ordered_by_merchant.map do |invoices|
+  end
+
+  def associated_merchant_invoice_items
+    associated_merchant_invoices.map do |invoices|
       sales_engine.invoice_item_repository.find_invoice_items_from_invoice_ids(invoices)
     end
-    quantity_of_individual_invoice_items = invoice_items_ordered_by_merchant.map do |invoice_items|
+  end
+
+  def quantity_of_individual_invoice_items
+    associated_merchant_invoice_items.map do |invoice_items|
       invoice_items.map { |invoice_item| invoice_item.quantity }
     end
-    ordered_total_quantities = quantity_of_individual_invoice_items.map do |quantities|
+  end
+
+  def total_quantities_in_order
+    quantity_of_individual_invoice_items.map do |quantities|
       quantities.reduce(:+)
     end
-    ordered_merchants = merchants_with_successful_invoices.map do |merchants_and_invoices|
-      merchants_and_invoices[0]
-    end
-    sorted_merchants_by_quantity = ordered_merchants.zip(ordered_total_quantities).sort_by do |merchant, quantity|
+  end
+
+  def merchants_sorted_by_most_items_sold
+    all.zip(total_quantities_in_order).sort_by do |merchant, quantity|
       -quantity
     end
-    sorted_merchants_by_quantity.map do |merchant_and_quantity|
+  end
+
+  def most_items(x)
+    merchants_sorted_by_most_items_sold.map do |merchant_and_quantity|
       merchant_and_quantity[0]
     end[0..x-1]
   end
 
+  def invoices_for_each_date
+    sales_engine.all_successful_invoices.group_by do |invoice|
+      invoice.created_at
+    end
+  end
+
+  def revenues_for_invoices
+    invoices_for_each_date.values.map do |invoices|
+      sales_engine.invoice_item_repository.find_revenue_for_invoice_items(invoices)
+    end
+  end
+
+  def revenue(date)
+    total_revenues = revenues_for_invoices.map do |revenues|
+      revenues.reduce(:+)
+    end
+    dates_with_total_revenues = Hash[dates_of_invoices.keys.zip(total_revenues)]
+    dates_with_total_revenues.fetch(date)
+  end
 end

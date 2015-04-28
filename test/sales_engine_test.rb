@@ -137,6 +137,14 @@ class SalesEngineTest < Minitest::Test
     assert_equal "Daugherty Group", engine.merchant_repository.most_items(5).last.name
   end
 
+  def test_it_finds_all_merchant_revenue_by_date
+    sales_engine = SalesEngine.new("./data")
+    sales_engine.startup
+    date = Date.parse("Tue, 20 Mar 2012")
+
+    assert_equal 2549722, sales_engine.merchant_repository.revenue(date).to_i
+  end
+
 end
 
 #If time, write test for find_invoices_by_transactions
