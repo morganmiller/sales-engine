@@ -123,7 +123,7 @@ class SalesEngine
     find_items_by_ids(invoice_item_repository.top_grossing_items[0..x-1])
   end
 
-  def find_invoice_items_by_invoices(invoices)
+  def total_merchant_revenue(invoices)
     invoice_item_repository.find_total_revenue_for_a_merchant(invoices)
   end
 end

@@ -184,19 +184,26 @@ attr_reader :invoice_items, :sales_engine
     sorted.map { |a| a[0] }
   end
 
-  def find_total_revenue_for_a_merchant(invoices)
-    # require 'pry'
-    # binding.pry
-    invoice_ids = invoices.map do |invoice|
+  def find_invoice_ids_from_invoices(invoices)
+    invoices.map do |invoice|
       invoice.id
     end
-    inv_items = invoice_ids.flat_map do |invoice_id|
+  end
+
+  def find_invoice_items_from_invoice_ids(invoices)
+    find_invoice_ids_from_invoices(invoices).flat_map do |invoice_id|
       find_all_by_invoice_id(invoice_id)
     end
-    flappy = inv_items.map do |inv_item|
+  end
+
+  def find_revenue_for_invoice_items(invoices)
+    find_invoice_items_from_invoice_ids(invoices).map do |inv_item|
       inv_item.revenue
     end
-    flappy.reduce(:+)
+  end
+
+  def find_total_revenue_for_a_merchant(invoices)
+    find_revenue_for_invoice_items(invoices).reduce(:+)
   end
 
 end

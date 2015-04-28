@@ -106,11 +106,14 @@ class MerchantRepository
     sales_engine.find_customers_by_invoice_ids(invoice_ids)
   end
 
-  def total_revenue_for_a_merchant(merchant_id)
-    successful_invoices = find_invoices(merchant_id).select do |invoice|
+  def successful_invoices(merchant_id)
+    find_invoices(merchant_id).select do |invoice|
       invoice if sales_engine.invoice_ids_for_successful_transactions.include?(invoice.id)
     end
-    sales_engine.find_invoice_items_by_invoices(successful_invoices)
+  end
+
+  def total_revenue_for_a_merchant(merchant_id)
+    sales_engine.total_merchant_revenue(successful_invoices(merchant_id))
   end
 
 end
