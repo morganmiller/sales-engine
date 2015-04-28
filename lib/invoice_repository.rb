@@ -121,6 +121,5 @@ attr_reader :invoices, :sales_engine
 
   def find_items(id)
     sales_engine.find_all_the_invoice_items_by_invoice_id(id)
-
   end
 end

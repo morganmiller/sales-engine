@@ -89,11 +89,19 @@ class SalesEngineTest < Minitest::Test
     assert_equal 5, engine.find_items_by_ids([1,2,3,4,5]).length
   end
 
-  def test_it_can_group_unique_item_ids_with_quantities
+  def test_it_can_find_most_items_sold
+    skip
     sales_engine = SalesEngine.new("./data")
     sales_engine.startup
 
-    assert_equal "", sales_engine.find_most_items(37).last.name
+    assert_equal "Item Ut Quaerat", sales_engine.find_most_items(37).last.name
+  end
+
+  def test_it_can_find_top_grossing_items
+    sales_engine = SalesEngine.new("./data")
+    sales_engine.startup
+
+    assert_equal "", sales_engine.find_most_revenue_for_items(3)
   end
 end
 

@@ -118,4 +118,10 @@ class TransactionRepository
   def find_invoice(invoice_id)
     sales_engine.find_invoice_by_invoice_id(invoice_id)
   end
+
+  def successful_transactions
+    all.map do |transaction|
+      transaction if transaction.successful?
+    end.delete_if {|transaction| transaction.nil?}
+  end
 end

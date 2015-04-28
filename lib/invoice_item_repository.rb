@@ -124,21 +124,61 @@ attr_reader :invoice_items, :sales_engine
     sales_engine.find_item_by_id(item_id)
   end
 
-  def find_most_items_sold
+  def invoice_items_with_successful_transactions
+    all.map do |invoice_item|
+      invoice_item if sales_engine.invoice_ids_for_successful_transactions.include?(invoice_item.invoice_id)
+    end.delete_if {|invoice_item| invoice_item.nil?}
+  end
+
+  def items_with_quantities
     unique_items = {}
-    all.each do |invoice_item|
+    invoice_items_with_successful_transactions.group_by do |invoice_item|
+      invoice_item.item_id
       if unique_items.has_key?(invoice_item.item_id)
         unique_items[invoice_item.item_id] << invoice_item.quantity
       else
         unique_items[invoice_item.item_id] = [invoice_item.quantity]
       end
     end
-    total_quantities = unique_items.values.map do |quantities|
-      quantities.reduce(:+)
+    unique_items
+  end
+
+  def total_quantities
+    items_with_quantities.values.map do |quantity|
+      quantity.reduce(:+)
     end
-    unsorted = unique_items.keys.zip(total_quantities)
-    sorted = unsorted.sort_by { |item_id, quantity| -quantity }
+  end
+
+  def items_sorted_by_total_quantities
+    items_with_quantities.keys.zip(total_quantities).sort_by do |item_id, quantity|
+      -quantity
+    end
+  end
+
+  def find_most_items_sold
+    items_sorted_by_total_quantities.map { |a| a[0] }
+  end
+
+  def retrieve_items_by_ids
+    sales_engine.find_items_by_ids(items_with_quantities.keys)
+  end
+
+  def all_unit_prices
+    retrieve_items_by_ids.map do |item|
+      item.unit_price
+    end
+  end
+
+  def total_revenues
+    tots = total_quantities.zip(all_unit_prices)
+    tots.flat_map do |a|
+      a[0] * a[1]
+    end
+  end
+  def top_grossing_items
+    sorted = items_with_quantities.keys.zip(total_revenues).sort_by do |item_id, revenue|
+      -revenue
+    end
     sorted.map { |a| a[0] }
   end
 end
-
