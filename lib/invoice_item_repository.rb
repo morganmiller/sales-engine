@@ -143,19 +143,42 @@ attr_reader :invoice_items, :sales_engine
     unique_items
   end
 
-  def items_with_total_quantities
-    items_with_quantities.values.map do |quantities|
-      quantities.reduce(:+)
+  def total_quantities
+    items_with_quantities.values.map do |quantity|
+      quantity.reduce(:+)
     end
   end
 
   def items_sorted_by_total_quantities
-    items_with_quantities.keys.zip(items_with_total_quantities).sort_by do |item_id, quantity|
+    items_with_quantities.keys.zip(total_quantities).sort_by do |item_id, quantity|
       -quantity
     end
   end
 
   def find_most_items_sold
     items_sorted_by_total_quantities.map { |a| a[0] }
+  end
+
+  def retrieve_items_by_ids
+    sales_engine.find_items_by_ids(items_with_quantities.keys)
+  end
+
+  def all_unit_prices
+    retrieve_items_by_ids.map do |item|
+      item.unit_price
+    end
+  end
+
+  def total_revenues
+    tots = total_quantities.zip(all_unit_prices)
+    tots.flat_map do |a|
+      a[0] * a[1]
+    end
+  end
+  def top_grossing_items
+    sorted = items_with_quantities.keys.zip(total_revenues).sort_by do |item_id, revenue|
+      -revenue
+    end
+    sorted.map { |a| a[0] }
   end
 end

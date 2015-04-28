@@ -90,10 +90,18 @@ class SalesEngineTest < Minitest::Test
   end
 
   def test_it_can_find_most_items_sold
+    skip
     sales_engine = SalesEngine.new("./data")
     sales_engine.startup
 
     assert_equal "Item Ut Quaerat", sales_engine.find_most_items(37).last.name
+  end
+
+  def test_it_can_find_top_grossing_items
+    sales_engine = SalesEngine.new("./data")
+    sales_engine.startup
+
+    assert_equal "", sales_engine.find_most_revenue_for_items(3)
   end
 end
 

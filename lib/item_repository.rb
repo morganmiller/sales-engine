@@ -126,4 +126,8 @@ class ItemRepository
   def most_items(x)
     sales_engine.find_most_items(x)
   end
+
+  def most_revenue(x)
+    sales_engine.find_most_revenue_for_items(x)
+  end
 end
