@@ -205,19 +205,24 @@ attr_reader :invoice_items, :sales_engine
     find_revenue_for_invoice_items(invoices).reduce(:+)
   end
 
+  def grouped_items(items)
+      items.group_by { |item| item }
+  end
+
+  def quantity_for_new_item(items)
+    grouped_items(items).flat_map do |item|
+      item.count
+    end.uniq.join
+  end
+
   def create_new_items(items, id)
     items.each do |item|
-      grouped_items = items.group_by do |item|
-        item
-      end
-      quantity = grouped_items.map do |item|
-        item.count
-      end.uniq.flatten.join
+      grouped_items(items)
       line = {
         id:         "#{invoice_items.last.id + 1}",
         item_id:    item.id,
         invoice_id: id,
-        quantity:   quantity,
+        quantity:   quantity_for_new_item(items),
         unit_price: item.unit_price,
         created_at: "#{Date.new}",
         updated_at: "#{Date.new}"
@@ -226,5 +231,4 @@ attr_reader :invoice_items, :sales_engine
      invoice_items << new_invoice_item
     end
   end
-
 end
