@@ -8,6 +8,7 @@ class InvoiceItemTest < Minitest::Test
     engine = SalesEngine.new("./test/fixtures")
     engine.startup
     invoice_item = engine.invoice_item_repository.all[0]
+
     assert_equal 1, invoice_item.invoice.id
   end
 
@@ -15,6 +16,7 @@ class InvoiceItemTest < Minitest::Test
     engine = SalesEngine.new("./test/fixtures")
     engine.startup
     invoice_item = engine.invoice_item_repository.all[0]
+
     refute invoice_item.item
   end
 end

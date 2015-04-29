@@ -123,4 +123,3 @@ class CustomerRepositoryTest < Minitest::Test
   end
 end
 
-###Mock test find_invoices if needed for simplecov

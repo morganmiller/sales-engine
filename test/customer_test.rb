@@ -26,7 +26,7 @@ class CustomerTest < Minitest::Test
     engine.startup
     customer = engine.customer_repository.find_by_id(1)
 
-    assert_equal 5, customer.transactions.length
+    assert_equal 6, customer.transactions.length
     assert_equal 5, customer.successful_customer_transactions.length
   end
 

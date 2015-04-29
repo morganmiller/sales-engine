@@ -91,14 +91,14 @@ class SalesEngineTest < Minitest::Test
 
   def test_it_can_find_most_items_sold
     skip
-    sales_engine = SalesEngine.new("./business_logic_fixtures")
+    sales_engine = SalesEngine.new("./test/business_logic_fixtures")
     sales_engine.startup
 
     assert_equal "Item Qui Esse", sales_engine.find_most_items(2).last.name
   end
 
   def test_it_can_find_top_grossing_items
-    sales_engine = SalesEngine.new("./business_logic_fixtures")
+    sales_engine = SalesEngine.new("./test/business_logic_fixtures")
     sales_engine.startup
 
     assert_equal "Item Autem Minima", sales_engine.find_most_revenue_for_items(3).first.name

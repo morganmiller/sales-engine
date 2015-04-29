@@ -1,5 +1,5 @@
-require_relative '../test/test_helper'
-require_relative '../lib/invoice_item_repository'
+require './test/test_helper'
+require './lib/invoice_item_repository'
 require 'bigdecimal/util'
 
 class InvoiceItemRepositoryTest < Minitest::Test
@@ -145,11 +145,10 @@ class InvoiceItemRepositoryTest < Minitest::Test
     assert_equal 0, invoice_item_repository.find_all_by_updated_at("2012-03-27 14:54:10 UTC").count
   end
 
+  def test_it_can_find_most_items_sold
+    invoice_item_repository = InvoiceItemRepository.new(nil)
+    invoice_item_repository.load_data("./test/business_logic_fixtures/invoice_items.csv")
+
+    assert_equal "", invoice_item_repository.find_most_items_sold
+  end
 end
-
-
-#come back and figure out BigDecimal and unit_price and refactor
-#what to_i are needed??? can it be in string format per spec harness
-#also, figure out the requires and file paths can you just
-#require_relative 'test_helper' ? do this at the end once you have the
-#spec_harness attached
