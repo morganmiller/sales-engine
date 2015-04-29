@@ -11,4 +11,14 @@ class TransactionTest < Minitest::Test
 
     assert_equal 1, transaction.invoice.id
   end
+
+  def test_transaction_knows_of_its_own_successes
+    engine = SalesEngine.new("./test/business_logic_fixtures")
+    engine.startup
+    transaction1 = engine.transaction_repository.all[0]
+    transaction2 = engine.transaction_repository.all[5]
+
+    assert transaction1.successful?
+    refute transaction2.successful?
+  end
 end

@@ -1,10 +1,10 @@
-require_relative 'load_file'
+require_relative 'load_csv'
 require_relative 'invoice'
 
 class InvoiceRepository
 attr_reader :invoices, :sales_engine
 
-  include LoadFile
+  include LoadCSV
 
   def initialize(sales_engine)
     @invoices = []
@@ -12,7 +12,7 @@ attr_reader :invoices, :sales_engine
   end
 
   def load_data(path)
-    file = load_file(path)
+    file = load_csv(path)
     @invoices = file.map do |line|
       Invoice.new(line, self)
     end

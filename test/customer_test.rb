@@ -1,6 +1,6 @@
-require_relative '../test/test_helper'
-require_relative '../lib/customer'
-require_relative '../lib/sales_engine'
+require './test/test_helper'
+require './lib/customer'
+require './lib/sales_engine'
 
 class CustomerTest < Minitest::Test
 
@@ -22,21 +22,19 @@ class CustomerTest < Minitest::Test
   end
 
   def test_it_can_find_successful_customer_transactions
-    engine = SalesEngine.new("./data")
+    engine = SalesEngine.new("./test/business_logic_fixtures")
     engine.startup
-    customer = engine.customer_repository.find_by_id(80)
+    customer = engine.customer_repository.find_by_id(1)
 
-    assert_equal 10, customer.transactions.length
-    assert_equal 9 , customer.successful_customer_transactions.length
+    assert_equal 5, customer.transactions.length
+    assert_equal 5, customer.successful_customer_transactions.length
   end
 
   def test_a_customer_has_a_favorite_merchant
-    engine = SalesEngine.new("./data")
+    engine = SalesEngine.new("./test/business_logic_fixtures")
     engine.startup
-    customer = engine.customer_repository.find_by_id(80)
-    customer_2 = engine.customer_repository.find_by_id(10)
+    customer = engine.customer_repository.find_by_id(1)
 
-    assert_equal 53, customer.favorite_merchant.id
-    assert_equal 92 , customer_2.favorite_merchant.id
+    assert_equal 1, customer.favorite_merchant.id
   end
 end

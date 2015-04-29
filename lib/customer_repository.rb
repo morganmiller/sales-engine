@@ -1,10 +1,10 @@
-require_relative 'load_file'
+require_relative 'load_csv'
 require_relative 'customer'
 
 class CustomerRepository
   attr_reader :customers, :sales_engine
 
-  include LoadFile
+  include LoadCSV
 
   def initialize(sales_engine)
     @customers = []
@@ -12,7 +12,7 @@ class CustomerRepository
   end
 
   def load_data(path)
-    file = load_file(path)
+    file = load_csv(path)
     @customers = file.map do |line|
       Customer.new(line, self)
     end
