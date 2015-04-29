@@ -45,13 +45,10 @@ class Merchant
     invoice_id_collection.select{ |id| !transactions_invoice_id_collection.include?(id) }
   end
 
-  ###Refactor, find something better than each: flat_map?
   def successful_transactions
-    successful_transactions = []
-    transactions.flatten.each do |transaction|
-      successful_transactions << transaction if transaction.successful?
+    transactions.flatten.select do |transaction|
+      transaction if transaction.successful?
     end
-    successful_transactions
   end
 
   def customers
