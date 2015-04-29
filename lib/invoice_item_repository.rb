@@ -130,17 +130,28 @@ attr_reader :invoice_items, :sales_engine
     end.delete_if {|invoice_item| invoice_item.nil?}
   end
 
+  # def invoice_items_with_quantities
+  #   unique_items = {}
+  #   invoice_items_with_successful_transactions.group_by do |invoice_item|
+  #     invoice_item.item_id
+  #     if unique_items.has_key?(invoice_item.item_id)
+  #       unique_items[invoice_item.item_id] << invoice_item.quantity
+  #     else
+  #       unique_items[invoice_item.item_id] = [invoice_item.quantity]
+  #     end
+  #   end
+  #   unique_items
+  # end
+
   def invoice_items_with_quantities
-    unique_items = {}
-    invoice_items_with_successful_transactions.group_by do |invoice_item|
-      invoice_item.item_id
-      if unique_items.has_key?(invoice_item.item_id)
-        unique_items[invoice_item.item_id] << invoice_item.quantity
+    invoice_items_with_successful_transactions.reduce({}) do |result, invoice_item|
+      if result[invoice_item.item_id]
+        result[invoice_item.item_id] << invoice_item.quantity
       else
-        unique_items[invoice_item.item_id] = [invoice_item.quantity]
+        result[invoice_item.item_id] = [invoice_item.quantity]
       end
+      result
     end
-    unique_items
   end
 
   def total_quantities(quantities_to_sum)
@@ -216,7 +227,7 @@ attr_reader :invoice_items, :sales_engine
   end
 
   def create_new_items(items, id)
-    items.each do |item|
+    items.map do |item|
       grouped_items(items)
       line = {
         id:         "#{invoice_items.last.id + 1}",
@@ -227,8 +238,7 @@ attr_reader :invoice_items, :sales_engine
         created_at: "#{Date.new}",
         updated_at: "#{Date.new}"
               }
-     new_invoice_item = InvoiceItem.new(line, self)
-     invoice_items << new_invoice_item
+     invoice_items << InvoiceItem.new(line, self)
     end
   end
 end
