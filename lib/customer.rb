@@ -28,6 +28,6 @@ class Customer
   end
 
   def favorite_merchant
-    repository.find_favorite_merchant_id(successful_customer_transactions)
+    repository.find_favorite_merchant(successful_customer_transactions)
   end
 end
