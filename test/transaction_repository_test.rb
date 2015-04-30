@@ -62,12 +62,6 @@ class TransactionRepositoryTest < Minitest::Test
     assert_equal "success", transaction_repository.find_by_credit_card_number("4515551623735607").result
   end
 
-  def test_it_can_find_a_transaction_by_credit_expiration_date
-    skip #credit card expiration date is empty...what will we do here?
-    transaction_repository = TransactionRepository.new(nil)
-    transaction_repository.load_data("./test/fixtures/transactions.csv")
-  end
-
   def test_it_can_find_a_transaction_by_created_at_date
     transaction_repository = TransactionRepository.new(nil)
     transaction_repository.load_data("./test/fixtures/transactions.csv")
@@ -114,12 +108,6 @@ class TransactionRepositoryTest < Minitest::Test
     assert_equal 1, transaction_repository.find_all_by_credit_card_number("4654405418249632").count
     assert_equal 2, transaction_repository.find_all_by_credit_card_number("4580251236515201")[0].invoice_id
     assert_equal "success", transaction_repository.find_all_by_credit_card_number("4515551623735607")[0].result
-  end
-
-  def test_it_can_find_all_transactions_by_credit_expiration_date
-    skip #credit card expiration date is empty...what will we do here?
-    transaction_repository = TransactionRepository.new(nil)
-    transaction_repository.load_data("./test/fixtures/transactions.csv")
   end
 
   def test_it_can_find_all_transactions_by_created_at_date

@@ -93,8 +93,8 @@ class MerchantRepository
     end
   end
 
-  def retrieve_customers(successful_transactions)
-    invoices = sales_engine.find_invoices_by_transactions(successful_transactions)
+  def retrieve_customers(transactions)
+    invoices = sales_engine.find_invoices_by_transactions(transactions)
     invoices.map do |invoice|
       sales_engine.find_customer_by_id(invoice.customer_id)
     end
@@ -105,8 +105,8 @@ class MerchantRepository
   end
 
   def successful_invoices(merchant_id)
-    find_invoices(merchant_id).select do |invoice|
-      invoice if sales_engine.invoice_ids_for_successful_transactions.include?(invoice.id)
+    find_invoices(merchant_id).select do |i|
+      i if sales_engine.invoice_ids_for_successful_transactions.include?(i.id)
     end
   end
 
@@ -116,11 +116,11 @@ class MerchantRepository
     end
   end
 
-  def total_revenue_for_a_merchant(merchant_id, date = nil)
+  def total_revenue_for_a_merchant(id, date = nil)
     if date.nil?
-      sales_engine.total_merchant_revenue(successful_invoices(merchant_id))
+      sales_engine.total_merchant_revenue(successful_invoices(id))
     else
-      sales_engine.total_merchant_revenue(successful_invoices_by_date(merchant_id, date))
+      sales_engine.total_merchant_revenue(successful_invoices_by_date(id, date))
     end
   end
 
@@ -131,11 +131,15 @@ class MerchantRepository
   end
 
   def sorted_merchants_by_highest_revenue
-    total_revenue_for_all_merchants.sort_by { |merchant, total_revenue| -total_revenue }
+    total_revenue_for_all_merchants.sort_by do |merchant, total_revenue|
+      -total_revenue
+    end
   end
 
   def most_revenue(x)
-    sorted_merchants_by_highest_revenue.map { |merchant_revenue| merchant_revenue[0] }[0..x-1]
+    sorted_merchants_by_highest_revenue.map do |merchant_revenue|
+      merchant_revenue[0]
+    end[0..x-1]
   end
 
   def merchants_with_successful_invoices
@@ -152,7 +156,7 @@ class MerchantRepository
 
   def associated_merchant_invoice_items
     associated_merchant_invoices.map do |invoices|
-      sales_engine.invoice_item_repository.find_invoice_items_from_invoice_ids(invoices)
+      sales_engine.invoice_item_repository.find_invoice_items_from_ids(invoices)
     end
   end
 
@@ -187,8 +191,8 @@ class MerchantRepository
   end
 
   def revenues_for_invoices
-    invoices_for_each_date.values.map do |invoices|
-      sales_engine.invoice_item_repository.find_revenue_for_invoice_items(invoices)
+    invoices_for_each_date.values.map do |inv|
+      sales_engine.invoice_item_repository.find_revenue_for_invoice_items(inv)
     end
   end
 

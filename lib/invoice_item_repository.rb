@@ -124,18 +124,22 @@ attr_reader :invoice_items, :sales_engine
     sales_engine.find_item_by_id(item_id)
   end
 
+  def inv_ids_for_successful_transactions
+    sales_engine.invoice_ids_for_successful_transactions
+  end
+
   def invoice_items_with_successful_transactions
-    all.select do |invoice_item|
-      invoice_item if sales_engine.invoice_ids_for_successful_transactions.include?(invoice_item.invoice_id)
+    all.select do |ii|
+      ii if inv_ids_for_successful_transactions.include?(ii.invoice_id)
     end
   end
 
   def invoice_items_with_quantities
-    invoice_items_with_successful_transactions.reduce({}) do |result, invoice_item|
-      if result[invoice_item.item_id]
-        result[invoice_item.item_id] << invoice_item.quantity
+    invoice_items_with_successful_transactions.reduce({}) do |result, ii|
+      if result[ii.item_id]
+        result[ii.item_id] << ii.quantity
       else
-        result[invoice_item.item_id] = [invoice_item.quantity]
+        result[ii.item_id] = [ii.quantity]
       end
       result
     end
@@ -147,12 +151,12 @@ attr_reader :invoice_items, :sales_engine
     end
   end
 
-  def total_quantities_for_successful_invoice_items
+  def total_quantities_for_successful_ii
     total_quantities(invoice_items_with_quantities.values)
   end
 
   def invoice_items_with_total_quantities
-    invoice_items_with_quantities.keys.zip(total_quantities_for_successful_invoice_items)
+    invoice_items_with_quantities.keys.zip(total_quantities_for_successful_ii)
   end
 
   def items_sorted_by_total_quantities
@@ -176,7 +180,7 @@ attr_reader :invoice_items, :sales_engine
   end
 
   def paired_quantities_and_prices
-    total_quantities_for_successful_invoice_items.zip(all_unit_prices)
+    total_quantities_for_successful_ii.zip(all_unit_prices)
   end
 
   def total_revenues
@@ -186,8 +190,8 @@ attr_reader :invoice_items, :sales_engine
   end
 
   def paired_invoice_items_and_revenue
-    invoice_items_with_quantities.keys.zip(total_revenues).sort_by do |invoice_item, revenue|
-      -revenue
+    invoice_items_with_quantities.keys.zip(total_revenues).sort_by do |ii, rev|
+      -rev
     end
   end
 
@@ -201,14 +205,14 @@ attr_reader :invoice_items, :sales_engine
     end
   end
 
-  def find_invoice_items_from_invoice_ids(invoices)
+  def find_invoice_items_from_ids(invoices)
     find_invoice_ids_from_invoices(invoices).flat_map do |invoice_id|
       find_all_by_invoice_id(invoice_id)
     end
   end
 
   def find_revenue_for_invoice_items(invoices)
-    find_invoice_items_from_invoice_ids(invoices).map do |inv_item|
+    find_invoice_items_from_ids(invoices).map do |inv_item|
       inv_item.revenue
     end
   end

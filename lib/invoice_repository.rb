@@ -120,7 +120,7 @@ attr_reader :invoices, :sales_engine
   end
 
   def find_items(id)
-    sales_engine.find_all_the_invoice_items_by_invoice_id(id)
+    sales_engine.find_all_invoice_items_by_invoice_id(id)
   end
 
   def create(inputs)
