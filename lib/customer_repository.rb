@@ -107,18 +107,18 @@ class CustomerRepository
     end
   end
 
-  def favorite_merchant_id(successful_transactions)
-    find_merchant_ids_by_invoices(find_all_invoice_ids(successful_transactions)).max_by do |id|
-      find_merchant_ids_by_invoices(find_all_invoice_ids(successful_transactions)).count(id)
+  def favorite_merchant_id(trans)
+    find_merchant_ids_by_invoices(find_all_invoice_ids(trans)).max_by do |id|
+      find_merchant_ids_by_invoices(find_all_invoice_ids(trans)).count(id)
     end
   end
 
-  def find_favorite_merchant(successful_transactions)
-    sales_engine.find_merchant_by_id(favorite_merchant_id(successful_transactions))
+  def find_favorite_merchant(transactions)
+    sales_engine.find_merchant_by_id(favorite_merchant_id(transactions))
   end
 
-  def find_all_invoice_ids(successful_transactions)
-    successful_transactions.map do |transaction|
+  def find_all_invoice_ids(transactions)
+    transactions.map do |transaction|
       transaction.invoice_id
     end
   end

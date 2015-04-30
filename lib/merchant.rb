@@ -41,7 +41,7 @@ class Merchant
     transactions.delete_if { |t| t == [] }.map { |t| t[0].invoice_id }
   end
 
-  def invoice_ids_without_transactions
+  def iis_without_transactions
     invoice_ids.select{ |id| !invoice_ids_that_have_transactions.include?(id) }
   end
 
@@ -67,14 +67,14 @@ class Merchant
     end
   end
 
-  def invoice_ids_with_failed_transactions
+  def iis_with_failed_transactions
     transactions_by_invoice_id.delete_if do |invoice_id, transactions|
       transactions.any? { |a| a.successful? } || invoice_id.nil?
     end
   end
 
   def all_missing_invoice_ids
-    [invoice_ids_with_failed_transactions.keys, invoice_ids_without_transactions].flatten
+    [iis_with_failed_transactions.keys, iis_without_transactions].flatten
   end
 
   def customers_with_pending_invoices

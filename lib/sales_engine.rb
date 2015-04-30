@@ -19,7 +19,6 @@ class SalesEngine
   end
 
   def startup
-    # add memoization
     @customer_repository = CustomerRepository.new(self)
     @customer_repository.load_data("#{@filepath}/customers.csv")
     @merchant_repository = MerchantRepository.new(self)
@@ -74,7 +73,7 @@ class SalesEngine
     customer_repository.find_by_id(id)
   end
 
-  def find_all_the_invoice_items_by_invoice_id(id)
+  def find_all_invoice_items_by_invoice_id(id)
     invoice_items = invoice_item_repository.find_all_by_invoice_id(id)
     find_item_ids_by_invoice_items(invoice_items)
   end
@@ -128,7 +127,7 @@ class SalesEngine
     find_items_by_ids(invoice_item_repository.top_grossing_items[0..x-1])
   end
 
-  def total_merchant_revenue(invoices) #rename: this is revenue for just 1 merchant not all
+  def total_merchant_revenue(invoices)
     invoice_item_repository.find_total_revenue_for_a_merchant(invoices)
   end
 

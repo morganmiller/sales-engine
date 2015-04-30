@@ -151,7 +151,7 @@ class ItemRepository
     dates_shit_was_sold(id).zip(yo_item_heres_your_invoice_items(id))
   end
 
-  def dates_and_quantities_sold(id)
+  def quant_sold(id)
     hashy = {}
     dates_and_invoice_items(id).map do |date, invoice_item|
       if hashy.has_key?(date)
@@ -164,11 +164,15 @@ class ItemRepository
   end
 
   def summed_quantities_for_best_day(id)
-    sales_engine.invoice_item_repository.total_quantities(dates_and_quantities_sold(id).values)
+    sales_engine.invoice_item_repository.total_quantities(quant_sold(id).values)
+  end
+
+  def dates_and_best_day_quant(id)
+    quant_sold(id).keys.zip(summed_quantities_for_best_day(id))
   end
 
   def find_best_day(id)
-    dates_and_quantities_sold(id).keys.zip(summed_quantities_for_best_day(id)).sort_by do |date, quantity|
+    dates_and_best_day_quant(id).sort_by do |_date, quantity|
       -quantity
     end.first[0]
   end

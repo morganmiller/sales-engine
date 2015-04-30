@@ -120,9 +120,9 @@ class TransactionRepository
   end
 
   def successful_transactions
-    @transaction_success ||= all.map do |transaction|
+    @transaction_success ||= all.select do |transaction|
       transaction if transaction.successful?
-    end.delete_if {|transaction| transaction.nil?}
+    end
   end
 
   def create_new_charge(card_info, id)

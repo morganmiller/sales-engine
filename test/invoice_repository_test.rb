@@ -69,12 +69,11 @@ class InvoiceRepositoryTest < Minitest::Test
   end
 
   def test_it_can_find_a_invoice_by_created_at_date
-    skip #because we need to figure out the date parsing...also fix line 129
     invoice_repository = InvoiceRepository.new(nil)
     invoice_repository.load_data("./test/fixtures/invoices.csv")
 
-    assert_equal 26, invoice_repository.find_by_created_at("2012-03-25 09:54:09 UTC").merchant_id
-    assert_equal 1, invoice_repository.find_by_created_at("2012-03-25 09:54:09 UTC").id
+    assert_equal 26, invoice_repository.find_by_created_at(Date.new(2012, 3, 25)).merchant_id
+    assert_equal 1, invoice_repository.find_by_created_at(Date.new(2012, 3, 25)).id
   end
 
   def test_it_can_find_a_invoice_by_updated_at_date
@@ -91,6 +90,7 @@ class InvoiceRepositoryTest < Minitest::Test
     result   = invoice_repository.find_all_by_id(1)
     result_2 = invoice_repository.find_all_by_id(2)
 
+    assert result.is_a?(Array)
     assert_equal 26, result[0].merchant_id
     assert_equal 75, result_2[0].merchant_id
   end
@@ -101,6 +101,7 @@ class InvoiceRepositoryTest < Minitest::Test
     result   = invoice_repository.find_all_by_customer_id(1)
     result_2 = invoice_repository.find_all_by_customer_id(1)
 
+    assert result.is_a?(Array)
     assert_equal 1, result[0].id
     assert_equal 1, result_2[0].id
   end
