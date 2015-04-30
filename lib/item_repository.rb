@@ -172,7 +172,7 @@ class ItemRepository
   end
 
   def find_best_day(id)
-    dates_and_best_day_quant(id).sort_by do |date, quantity|
+    dates_and_best_day_quant(id).sort_by do |_date, quantity|
       -quantity
     end.first[0]
   end

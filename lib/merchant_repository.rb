@@ -131,7 +131,7 @@ class MerchantRepository
   end
 
   def sorted_merchants_by_highest_revenue
-    total_revenue_for_all_merchants.sort_by do |merchant, total_revenue|
+    total_revenue_for_all_merchants.sort_by do |_merchant, total_revenue|
       -total_revenue
     end
   end
@@ -173,7 +173,7 @@ class MerchantRepository
   end
 
   def merchants_sorted_by_most_items_sold
-    all.zip(total_quantities_in_order).sort_by do |merchant, quantity|
+    all.zip(total_quantities_in_order).sort_by do |_merchant, quantity|
       -quantity
     end
   end

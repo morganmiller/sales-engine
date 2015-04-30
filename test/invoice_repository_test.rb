@@ -90,6 +90,7 @@ class InvoiceRepositoryTest < Minitest::Test
     result   = invoice_repository.find_all_by_id(1)
     result_2 = invoice_repository.find_all_by_id(2)
 
+    assert result.is_a?(Array)
     assert_equal 26, result[0].merchant_id
     assert_equal 75, result_2[0].merchant_id
   end
@@ -100,6 +101,7 @@ class InvoiceRepositoryTest < Minitest::Test
     result   = invoice_repository.find_all_by_customer_id(1)
     result_2 = invoice_repository.find_all_by_customer_id(1)
 
+    assert result.is_a?(Array)
     assert_equal 1, result[0].id
     assert_equal 1, result_2[0].id
   end

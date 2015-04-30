@@ -190,7 +190,7 @@ attr_reader :invoice_items, :sales_engine
   end
 
   def paired_invoice_items_and_revenue
-    invoice_items_with_quantities.keys.zip(total_revenues).sort_by do |ii, rev|
+    invoice_items_with_quantities.keys.zip(total_revenues).sort_by do |_ii, rev|
       -rev
     end
   end
